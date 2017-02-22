@@ -596,7 +596,19 @@ Object3D.prototype = {
 		object.type = this.type;
 
 		if ( this.name !== '' ) object.name = this.name;
-		if ( JSON.stringify( this.userData ) !== '{}' ) object.userData = this.userData;
+		//if ( JSON.stringify( this.userData ) !== '{}' ) object.userData = this.userData;
+		if (typeof this.userData === 'object') {
+		    object.userData = {};
+		    for (var key in this.userData) {
+		        if (this.userData[key] instanceof Object3D) {
+		            object.userData[key] = this.userData[key].uuid;
+		        } else {
+		            object.userData[key] = this.userData[key];
+		        }
+		    }
+		} else {
+		    object.userData = this.userData;
+		}
 		if ( this.castShadow === true ) object.castShadow = true;
 		if ( this.receiveShadow === true ) object.receiveShadow = true;
 		if ( this.visible === false ) object.visible = false;

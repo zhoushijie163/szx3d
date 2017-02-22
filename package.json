@@ -1,6 +1,6 @@
 {
   "name": "szx3d",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "JavaScript 3D library",
   "main": "build/szx3d.js",
   "repository": "mrdoob/szx3d.js",
@@ -15,10 +15,10 @@
   ],
   "scripts": {
     "build": "rollup -c && sed -i \"s/\\bTHREE\\b/SZX3D/g\" build/szx3d.js",
-    "beautify": "uglifyjs build/szx3d.js -b --preamble \"/**\n * 文件名: szx3d.js\n * 爱护网世中心3Ｄ引擎\n *\n * @version V1.1.0   2017-2-11\n * @author Zhou Shijie\n */\" -o build/szx3d.V1.1.0.js",
-    "compress": "uglifyjs build/szx3d.js -m --preamble \"/**\n * 文件名: szx3d.min.js\n * 爱护网世中心3Ｄ引擎\n *\n * @version V1.1.0   2017-2-11\n * @author Zhou Shijie\n */\" -o build/szx3d.min.js",
-    "build-beautify": "rollup -c && sed -i \"s/\\bTHREE\\b/SZX3D/g\" build/szx3d.js && uglifyjs build/szx3d.js -cb --preamble \"/**\n * 文件名: szx3d.min.js\n * 爱护网世中心3Ｄ引擎\n *\n * @version V1.1.0   2017-2-11\n * @author Zhou Shijie\n */\" -o build/szx3d.V1.1.0.js",
-    "build-uglify": "rollup -c && sed -i \"s/\\bTHREE\\b/SZX3D/g\" build/szx3d.js && uglifyjs build/szx3d.js -cm --preamble \"/**\n * 文件名: szx3d.min.js\n * 爱护网世中心3Ｄ引擎\n *\n * @version V1.1.0   2017-2-11\n * @author Zhou Shijie\n */\" -o build/szx3d.min.js",
+    "beautify": "uglifyjs build/szx3d.js -b --preamble \"/**\n * 文件名: szx3d.js\n * 爱护网世中心3Ｄ引擎\n *\n * @version V1.1.1   2017-3-1\n * @author Zhou Shijie\n */\" -o build/szx3d.V1.1.1.js",
+    "compress": "uglifyjs build/szx3d.js -m --preamble \"/**\n * 文件名: szx3d.min.js\n * 爱护网世中心3Ｄ引擎\n *\n * @version V1.1.1   2017-3-1\n * @author Zhou Shijie\n */\" -o build/szx3d.min.js",
+    "build-beautify": "rollup -c && sed -i \"s/\\bTHREE\\b/SZX3D/g\" build/szx3d.js && uglifyjs build/szx3d.js -cb --preamble \"/**\n * 文件名: szx3d.min.js\n * 爱护网世中心3Ｄ引擎\n *\n * @version V1.1.1   2017-2-11\n * @author Zhou Shijie\n */\" -o build/szx3d.V1.1.1.js",
+    "build-uglify": "rollup -c && sed -i \"s/\\bTHREE\\b/SZX3D/g\" build/szx3d.js && uglifyjs build/szx3d.js -cm --preamble \"/**\n * 文件名: szx3d.min.js\n * 爱护网世中心3Ｄ引擎\n *\n * @version V1.1.1   2017-2-11\n * @author Zhou Shijie\n */\" -o build/szx3d.min.js",
     "build-closure": "rollup -c && sed -i \"s/\\bTHREE\\b/SZX3D/g\" build/szx3d.js && java -jar compiler/closure-compiler-v20160713.jar --warning_level=VERBOSE --jscomp_off=globalThis --jscomp_off=checkTypes --externs compiler/externs.js --language_in=ECMASCRIPT5_STRICT --js build/szx3d.js --js_output_file build/szx3d.min.js",
     "dev": "rollup -c -w",
     "lint": "eslint src",

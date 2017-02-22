@@ -211,7 +211,11 @@ export { CatmullRomCurve3 } from './extras/curves/CatmullRomCurve3.js';
 export { ImmediateRenderObject } from './extras/objects/ImmediateRenderObject.js';
 export { MorphBlendMesh } from './extras/objects/MorphBlendMesh.js';
 
-export { PlanControls } from './Controls/PlanControls.js';
-export { EditorControls } from './Controls/EditorControls.js';
-export { GameControls } from './Controls/GameControls.js';
-export { TransformControls } from './Controls/TransformControls.js';
+export { Projector } from './renderers/canvas/Projector.js';
+export { SpriteCanvasMaterial } from './renderers/canvas/SpriteCanvasMaterial.js';
+export { CanvasRenderer } from './renderers/CanvasRenderer.js';
+
+export { PlanControls } from './controls/PlanControls.js';
+export { EditorControls } from './controls/EditorControls.js';
+export { GameControls } from './controls/GameControls.js';
+export { TransformControls } from './controls/TransformControls.js';
