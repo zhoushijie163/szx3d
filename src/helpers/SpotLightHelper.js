@@ -28,7 +28,9 @@ function SpotLightHelper( light ) {
 		0, 0, 0,   1,   0,   1,
 		0, 0, 0, - 1,   0,   1,
 		0, 0, 0,   0,   1,   1,
-		0, 0, 0,   0, - 1,   1
+		0, 0, 0,   0, - 1,   1,
+        1, 0, 1, - 1,   0,   1,
+        0, 1, 1,   0, - 1,   1
 	];
 
 	for ( var i = 0, j = 1, l = 32; i < l; i ++, j ++ ) {
@@ -50,6 +52,12 @@ function SpotLightHelper( light ) {
 	this.cone = new LineSegments( geometry, material );
 	this.add( this.cone );
 
+    geometry = new BufferGeometry();
+    geometry.addAttribute('position', new Float32BufferAttribute([0, 0, 0, 0, 0, 1], 3));
+
+    this.targetLine = new LineSegments(geometry, material);
+    this.add(this.targetLine);
+
 	this.update();
 
 }
@@ -62,12 +70,16 @@ SpotLightHelper.prototype.dispose = function () {
 	this.cone.geometry.dispose();
 	this.cone.material.dispose();
 
+    this.targetLine.geometry.dispose();
+    this.targetLine.material.dispose();
+
 };
 
 SpotLightHelper.prototype.update = function () {
 
 	var vector = new Vector3();
 	var vector2 = new Vector3();
+	var vector3 = new Vector3();
 
 	return function update() {
 
@@ -78,10 +90,14 @@ SpotLightHelper.prototype.update = function () {
 
 		vector.setFromMatrixPosition( this.light.matrixWorld );
 		vector2.setFromMatrixPosition( this.light.target.matrixWorld );
+		vector3.subVectors(vector2, vector);
 
 		this.cone.lookAt( vector2.sub( vector ) );
 
 		this.cone.material.color.copy( this.light.color ).multiplyScalar( this.light.intensity );
+
+        this.targetLine.lookAt(vector3);
+        this.targetLine.scale.z = vector3.length();
 
 	};
 

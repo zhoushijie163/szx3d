@@ -53,7 +53,7 @@ function CubeCamera( near, far, cubeResolution ) {
 
 	this.renderTarget = new WebGLRenderTargetCube( cubeResolution, cubeResolution, options );
 
-	this.updateCubeMap = function ( renderer, scene ) {
+	this.updateCubeMap = function ( renderer, scene, forceClear ) {
 
 		if ( this.parent === null ) this.updateMatrixWorld();
 
@@ -63,24 +63,24 @@ function CubeCamera( near, far, cubeResolution ) {
 		renderTarget.texture.generateMipmaps = false;
 
 		renderTarget.activeCubeFace = 0;
-		renderer.render( scene, cameraPX, renderTarget );
+		renderer.render( scene, cameraPX, renderTarget, forceClear );
 
 		renderTarget.activeCubeFace = 1;
-		renderer.render( scene, cameraNX, renderTarget );
+		renderer.render( scene, cameraNX, renderTarget, forceClear );
 
 		renderTarget.activeCubeFace = 2;
-		renderer.render( scene, cameraPY, renderTarget );
+		renderer.render( scene, cameraPY, renderTarget, forceClear );
 
 		renderTarget.activeCubeFace = 3;
-		renderer.render( scene, cameraNY, renderTarget );
+		renderer.render( scene, cameraNY, renderTarget, forceClear );
 
 		renderTarget.activeCubeFace = 4;
-		renderer.render( scene, cameraPZ, renderTarget );
+		renderer.render( scene, cameraPZ, renderTarget, forceClear );
 
 		renderTarget.texture.generateMipmaps = generateMipmaps;
 
 		renderTarget.activeCubeFace = 5;
-		renderer.render( scene, cameraNZ, renderTarget );
+		renderer.render( scene, cameraNZ, renderTarget, forceClear );
 
 		renderer.setRenderTarget( null );
 

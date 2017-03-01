@@ -42,6 +42,7 @@ var UniformsUtils = {
 					parameter_src.isTexture ) ) {
 
 					uniforms_dst[ u ][ p ] = parameter_src.clone();
+					if( parameter_src.onUpdate ) uniforms_dst[ u ][ p ].onUpdate = parameter_src.onUpdate;
 
 				} else if ( Array.isArray( parameter_src ) ) {
 

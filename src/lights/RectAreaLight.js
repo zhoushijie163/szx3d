@@ -1,5 +1,5 @@
 import { Light } from './Light';
-
+import { Object3D } from '../core/Object3D';
 /**
  * @author abelnation / http://github.com/abelnation
  */
@@ -10,7 +10,7 @@ function RectAreaLight ( color, intensity, width, height ) {
 
 	this.type = 'RectAreaLight';
 
-	this.position.set( 0, 1, 0 );
+	this.position.copy( Object3D.DefaultUp );
 	this.updateMatrix();
 
 	this.width = ( width !== undefined ) ? width : 10;
@@ -19,7 +19,8 @@ function RectAreaLight ( color, intensity, width, height ) {
 	// TODO (abelnation): distance/decay
 
 	// TODO (abelnation): update method for RectAreaLight to update transform to lookat target
-
+	//this.target = new Object3D();
+	
 	// TODO (abelnation): shadows
 	// this.shadow = new THREE.RectAreaLightShadow( new THREE.PerspectiveCamera( 90, 1, 0.5, 500 ) );
 
@@ -42,6 +43,17 @@ RectAreaLight.prototype = Object.assign( Object.create( Light.prototype ), {
 		// this.shadow = source.shadow.clone();
 
 		return this;
+
+	},
+
+	toJSON: function ( meta ) {
+
+		var data = Light.prototype.toJSON.call( this, meta );
+
+		data.object.width = this.width;
+		data.object.height = this.height;
+
+		return data;
 
 	}
 

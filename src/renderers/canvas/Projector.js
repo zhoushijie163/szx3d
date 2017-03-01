@@ -157,22 +157,33 @@ function Projector() {
 
 		}
 
-		function pushLine( a, b ) {
+		function pushLine( a, b, _modelViewProjectionMatrix ) {
 
 			var v1 = _vertexPool[ a ];
 			var v2 = _vertexPool[ b ];
+			
+			
+			v1.positionScreen.copy( v1.position ).applyMatrix4( _modelViewProjectionMatrix );
+			v2.positionScreen.copy( v2.position ).applyMatrix4( _modelViewProjectionMatrix );
+			
+			if ( clipLine( v1.positionScreen, v2.positionScreen ) === true ) {
+			
+			    v1.positionScreen.multiplyScalar( 1 / v1.positionScreen.w );
+			    v2.positionScreen.multiplyScalar( 1 / v2.positionScreen.w );
 
-			_line = getNextLineInPool();
+			    _line = getNextLineInPool();
 
-			_line.id = object.id;
-			_line.v1.copy( v1 );
-			_line.v2.copy( v2 );
-			_line.z = ( v1.positionScreen.z + v2.positionScreen.z ) / 2;
-			_line.renderOrder = object.renderOrder;
+			    _line.id = object.id;
+			    _line.v1.copy( v1 );
+			    _line.v2.copy( v2 );
+			    _line.z = ( v1.positionScreen.z + v2.positionScreen.z ) / 2;
+			    _line.renderOrder = object.renderOrder;
 
-			_line.material = object.material;
+			    _line.material = object.material;
 
-			_renderData.elements.push( _line );
+			    _renderData.elements.push( _line );
+			
+			}
 
 		}
 
@@ -231,7 +242,7 @@ function Projector() {
 			pushUv: pushUv,
 			pushLine: pushLine,
 			pushTriangle: pushTriangle
-		}
+		};
 
 	};
 
@@ -531,6 +542,8 @@ function Projector() {
 
 			} else if ( object instanceof Line ) {
 
+                _modelViewProjectionMatrix.multiplyMatrices( _viewProjectionMatrix, _modelMatrix );
+
 				if ( geometry instanceof BufferGeometry ) {
 
 					var attributes = geometry.attributes;
@@ -551,7 +564,7 @@ function Projector() {
 
 							for ( var i = 0, l = indices.length; i < l; i += 2 ) {
 
-								renderList.pushLine( indices[ i ], indices[ i + 1 ] );
+								renderList.pushLine( indices[ i ], indices[ i + 1 ], _modelViewProjectionMatrix );
 
 							}
 
@@ -561,7 +574,7 @@ function Projector() {
 
 							for ( var i = 0, l = ( positions.length / 3 ) - 1; i < l; i += step ) {
 
-								renderList.pushLine( i, i + 1 );
+								renderList.pushLine( i, i + 1, _modelViewProjectionMatrix );
 
 							}
 
@@ -571,7 +584,7 @@ function Projector() {
 
 				} else if ( geometry instanceof Geometry ) {
 
-					_modelViewProjectionMatrix.multiplyMatrices( _viewProjectionMatrix, _modelMatrix );
+					//_modelViewProjectionMatrix.multiplyMatrices( _viewProjectionMatrix, _modelMatrix );
 
 					var vertices = object.geometry.vertices;
 

@@ -14,6 +14,7 @@ import { MeshBasicMaterial } from '../materials/MeshBasicMaterial';
 import { MeshNormalMaterial } from '../materials/MeshNormalMaterial';
 import { MeshLambertMaterial } from '../materials/MeshLambertMaterial';
 import { MeshPhongMaterial } from '../materials/MeshPhongMaterial';
+import { MeshStandardMaterial } from '../materials/MeshStandardMaterial';
 import { SpriteMaterial } from '../materials/SpriteMaterial';
 import { SpriteCanvasMaterial } from './canvas/SpriteCanvasMaterial';
 import { Camera } from '../cameras/Camera';
@@ -693,7 +694,7 @@ function CanvasRenderer( parameters ) {
 
 		drawTriangle( _v1x, _v1y, _v2x, _v2y, _v3x, _v3y );
 
-		if ( ( material instanceof MeshLambertMaterial || material instanceof MeshPhongMaterial ) && material.map === null ) {
+		if ( ( material instanceof MeshLambertMaterial || material instanceof MeshPhongMaterial || material instanceof MeshStandardMaterial ) && material.map === null ) {
 
 			_diffuseColor.copy( material.color );
 			_emissiveColor.copy( material.emissive );
@@ -716,9 +717,7 @@ function CanvasRenderer( parameters ) {
 				 ? strokePath( _color, material.wireframeLinewidth, material.wireframeLinecap, material.wireframeLinejoin )
 				 : fillPath( _color );
 
-		} else if ( material instanceof MeshBasicMaterial ||
-				    material instanceof MeshLambertMaterial ||
-				    material instanceof MeshPhongMaterial ) {
+		} else if ( material instanceof MeshBasicMaterial || material instanceof MeshLambertMaterial || material instanceof MeshPhongMaterial || material instanceof MeshStandardMaterial) {
 
 			if ( material.map !== null ) {
 

@@ -58,6 +58,7 @@ var ShaderLib = {
 			UniformsLib.gradientmap,
 			UniformsLib.fog,
 			UniformsLib.lights,
+			UniformsLib.ltc_brdf,
 			{
 				emissive: { value: new Color( 0x000000 ) },
 				specular: { value: new Color( 0x111111 ) },
@@ -84,6 +85,7 @@ var ShaderLib = {
 			UniformsLib.metalnessmap,
 			UniformsLib.fog,
 			UniformsLib.lights,
+			UniformsLib.ltc_brdf,
 			{
 				emissive: { value: new Color( 0x000000 ) },
 				roughness: { value: 0.5 },
