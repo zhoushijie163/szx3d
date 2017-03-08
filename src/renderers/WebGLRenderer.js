@@ -1938,12 +1938,6 @@ function WebGLRenderer( parameters ) {
 
 			}
 
-			// RectAreaLight Texture
-			// TODO (mrdoob): Find a nicer implementation
-
-			//if ( m_uniforms.ltcMat !== undefined ) m_uniforms.ltcMat.value = UniformsLib.LTC_MAT_TEXTURE;
-			//if ( m_uniforms.ltcMag !== undefined ) m_uniforms.ltcMag.value = UniformsLib.LTC_MAG_TEXTURE;
-
 			WebGLUniforms.upload(
 				_gl, materialProperties.uniformsList, m_uniforms, _this );
 

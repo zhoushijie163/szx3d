@@ -21582,6 +21582,7 @@
 			this.flipY = source.flipY;
 			this.unpackAlignment = source.unpackAlignment;
 			this.encoding = source.encoding;
+			if( source.onUpdate ) this.onUpdate = source.onUpdate;
 
 			return this;
 
@@ -22303,13 +22304,19 @@
 					if ( parameter_src && ( parameter_src.isColor ||
 						parameter_src.isMatrix3 || parameter_src.isMatrix4 ||
 						parameter_src.isVector2 || parameter_src.isVector3 || parameter_src.isVector4 ||
-						parameter_src.isTexture && !parameter_src.isDataTexture) ) {
+						parameter_src.isTexture ) ) {
 
-						uniforms_dst[ u ][ p ] = parameter_src.clone();
+						//uniforms_dst[ u ][ p ] = parameter_src.clone();
+						//uniforms_dst[ u ][ p ] = parameter_src;
+						if( parameter_src.onUpdate ) {
+						    uniforms_dst[ u ][ p ] = parameter_src; 
+						} else { 
+						    uniforms_dst[ u ][ p ] = parameter_src.clone(); 
+						}
 
 					} else if ( Array.isArray( parameter_src ) ) {
 
-						uniforms_dst[ u ][ p ] = parameter_src.slice();
+						uniforms_dst[ u ][ p ] = parameter_src.slice( 0 );
 
 					} else {
 
@@ -25100,7 +25107,9 @@
 		    ltcMag: { value: LTC_MAG_TEXTURE }
 		
 		};
-
+		
+	    UniformsLib.LTC_MAT_TEXTURE = LTC_MAT_TEXTURE;
+	    UniformsLib.LTC_MAG_TEXTURE = LTC_MAG_TEXTURE;
 	})();
 
 	/**

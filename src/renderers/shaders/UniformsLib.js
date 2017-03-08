@@ -2777,8 +2777,7 @@ var UniformsLib = {
 	    ltcMag: { value: LTC_MAG_TEXTURE }
 	
 	};
-
+	
 })();
-
 
 export { UniformsLib };

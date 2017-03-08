@@ -41,12 +41,15 @@ var UniformsUtils = {
 					parameter_src.isVector2 || parameter_src.isVector3 || parameter_src.isVector4 ||
 					parameter_src.isTexture ) ) {
 
-					uniforms_dst[ u ][ p ] = parameter_src.clone();
-					if( parameter_src.onUpdate ) uniforms_dst[ u ][ p ].onUpdate = parameter_src.onUpdate;
+					if( parameter_src.onUpdate ) {
+						uniforms_dst[ u ][ p ] = parameter_src; 
+					} else { 
+						uniforms_dst[ u ][ p ] = parameter_src.clone(); 
+					}
 
 				} else if ( Array.isArray( parameter_src ) ) {
 
-					uniforms_dst[ u ][ p ] = parameter_src.slice();
+					uniforms_dst[ u ][ p ] = parameter_src.slice( 0 );
 
 				} else {
 

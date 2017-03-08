@@ -103,6 +103,7 @@ Texture.prototype = {
 		this.flipY = source.flipY;
 		this.unpackAlignment = source.unpackAlignment;
 		this.encoding = source.encoding;
+		if( source.onUpdate ) this.onUpdate = source.onUpdate;
 
 		return this;
 
