@@ -4,7 +4,7 @@
     (factory((global.SZX3D = global.SZX3D || {})));
 }(this, (function (exports) { 'use strict';
 
-	var REVISION = '1.1.1';
+	var REVISION = '1.1.2';
 	var MOUSE = { LEFT: 0, MIDDLE: 1, RIGHT: 2 };
 	var CullFaceNone = 0;
 	var CullFaceBack = 1;
@@ -21368,6 +21368,51 @@
 	WireframeGeometry.prototype = Object.create( BufferGeometry.prototype );
 	WireframeGeometry.prototype.constructor = WireframeGeometry;
 
+
+
+	var Geometries = Object.freeze({
+		BoxGeometry: BoxGeometry,
+		BoxBufferGeometry: BoxBufferGeometry,
+		CircleGeometry: CircleGeometry,
+		CircleBufferGeometry: CircleBufferGeometry,
+		CylinderGeometry: CylinderGeometry,
+		CylinderBufferGeometry: CylinderBufferGeometry,
+		ConeGeometry: ConeGeometry,
+		ConeBufferGeometry: ConeBufferGeometry,
+		EdgesGeometry: EdgesGeometry,
+		ExtrudeGeometry: ExtrudeGeometry,
+		ShapeGeometry: ShapeGeometry,
+		ShapeBufferGeometry: ShapeBufferGeometry,
+		LatheGeometry: LatheGeometry,
+		LatheBufferGeometry: LatheBufferGeometry,
+		PlaneGeometry: PlaneGeometry,
+		PlaneBufferGeometry: PlaneBufferGeometry,
+		RingGeometry: RingGeometry,
+		RingBufferGeometry: RingBufferGeometry,
+		SphereGeometry: SphereGeometry,
+		SphereBufferGeometry: SphereBufferGeometry,
+		TextGeometry: TextGeometry,
+		TorusGeometry: TorusGeometry,
+		TorusBufferGeometry: TorusBufferGeometry,
+		TorusKnotGeometry: TorusKnotGeometry,
+		TorusKnotBufferGeometry: TorusKnotBufferGeometry,
+		TubeGeometry: TubeGeometry,
+		TubeBufferGeometry: TubeBufferGeometry,
+		PolyhedronGeometry: PolyhedronGeometry,
+		PolyhedronBufferGeometry: PolyhedronBufferGeometry,
+		DodecahedronGeometry: DodecahedronGeometry,
+		DodecahedronBufferGeometry: DodecahedronBufferGeometry,
+		IcosahedronGeometry: IcosahedronGeometry,
+		IcosahedronBufferGeometry: IcosahedronBufferGeometry,
+		OctahedronGeometry: OctahedronGeometry,
+		OctahedronBufferGeometry: OctahedronBufferGeometry,
+		TetrahedronGeometry: TetrahedronGeometry,
+		TetrahedronBufferGeometry: TetrahedronBufferGeometry,
+		ParametricGeometry: ParametricGeometry,
+		ParametricBufferGeometry: ParametricBufferGeometry,
+		WireframeGeometry: WireframeGeometry
+	});
+
 	/**
 	 * @author mrdoob / http://mrdoob.com/
 	 */
@@ -22306,12 +22351,10 @@
 						parameter_src.isVector2 || parameter_src.isVector3 || parameter_src.isVector4 ||
 						parameter_src.isTexture ) ) {
 
-						//uniforms_dst[ u ][ p ] = parameter_src.clone();
-						//uniforms_dst[ u ][ p ] = parameter_src;
 						if( parameter_src.onUpdate ) {
-						    uniforms_dst[ u ][ p ] = parameter_src; 
+							uniforms_dst[ u ][ p ] = parameter_src; 
 						} else { 
-						    uniforms_dst[ u ][ p ] = parameter_src.clone(); 
+							uniforms_dst[ u ][ p ] = parameter_src.clone(); 
 						}
 
 					} else if ( Array.isArray( parameter_src ) ) {
@@ -25108,8 +25151,6 @@
 		
 		};
 		
-	    UniformsLib.LTC_MAT_TEXTURE = LTC_MAT_TEXTURE;
-	    UniformsLib.LTC_MAG_TEXTURE = LTC_MAG_TEXTURE;
 	})();
 
 	/**
@@ -34268,12 +34309,6 @@
 
 				}
 
-				// RectAreaLight Texture
-				// TODO (mrdoob): Find a nicer implementation
-
-				//if ( m_uniforms.ltcMat !== undefined ) m_uniforms.ltcMat.value = UniformsLib.LTC_MAT_TEXTURE;
-				//if ( m_uniforms.ltcMag !== undefined ) m_uniforms.ltcMag.value = UniformsLib.LTC_MAG_TEXTURE;
-
 				WebGLUniforms.upload(
 					_gl, materialProperties.uniformsList, m_uniforms, _this );
 
@@ -36361,6 +36396,28 @@
 
 	ShadowMaterial.prototype.isShadowMaterial = true;
 
+
+
+	var Materials = Object.freeze({
+		Material: Material,
+		PointsMaterial: PointsMaterial,
+		LineBasicMaterial: LineBasicMaterial,
+		LineDashedMaterial: LineDashedMaterial,
+		MeshBasicMaterial: MeshBasicMaterial,
+		MeshDepthMaterial: MeshDepthMaterial,
+		MeshLambertMaterial: MeshLambertMaterial,
+		MeshNormalMaterial: MeshNormalMaterial,
+		MeshToonMaterial: MeshToonMaterial,
+		MeshPhongMaterial: MeshPhongMaterial,
+		MeshStandardMaterial: MeshStandardMaterial,
+		MeshPhysicalMaterial: MeshPhysicalMaterial,
+		SpriteMaterial: SpriteMaterial,
+		MultiMaterial: MultiMaterial,
+		ShaderMaterial: ShaderMaterial,
+		RawShaderMaterial: RawShaderMaterial,
+		ShadowMaterial: ShadowMaterial
+	});
+
 	/**
 	 * @author mrdoob / http://mrdoob.com/
 	 */
@@ -38422,28 +38479,6 @@
 		}
 
 	} );
-
-
-
-	var Materials = Object.freeze({
-		ShadowMaterial: ShadowMaterial,
-		SpriteMaterial: SpriteMaterial,
-		RawShaderMaterial: RawShaderMaterial,
-		ShaderMaterial: ShaderMaterial,
-		PointsMaterial: PointsMaterial,
-		MultiMaterial: MultiMaterial,
-		MeshPhysicalMaterial: MeshPhysicalMaterial,
-		MeshStandardMaterial: MeshStandardMaterial,
-		MeshPhongMaterial: MeshPhongMaterial,
-		MeshToonMaterial: MeshToonMaterial,
-		MeshNormalMaterial: MeshNormalMaterial,
-		MeshLambertMaterial: MeshLambertMaterial,
-		MeshDepthMaterial: MeshDepthMaterial,
-		MeshBasicMaterial: MeshBasicMaterial,
-		LineDashedMaterial: LineDashedMaterial,
-		LineBasicMaterial: LineBasicMaterial,
-		Material: Material
-	});
 
 	/**
 	 * @author mrdoob / http://mrdoob.com/
@@ -41611,51 +41646,6 @@
 
 	} );
 
-
-
-	var Geometries = Object.freeze({
-		WireframeGeometry: WireframeGeometry,
-		ParametricGeometry: ParametricGeometry,
-		ParametricBufferGeometry: ParametricBufferGeometry,
-		TetrahedronGeometry: TetrahedronGeometry,
-		TetrahedronBufferGeometry: TetrahedronBufferGeometry,
-		OctahedronGeometry: OctahedronGeometry,
-		OctahedronBufferGeometry: OctahedronBufferGeometry,
-		IcosahedronGeometry: IcosahedronGeometry,
-		IcosahedronBufferGeometry: IcosahedronBufferGeometry,
-		DodecahedronGeometry: DodecahedronGeometry,
-		DodecahedronBufferGeometry: DodecahedronBufferGeometry,
-		PolyhedronGeometry: PolyhedronGeometry,
-		PolyhedronBufferGeometry: PolyhedronBufferGeometry,
-		TubeGeometry: TubeGeometry,
-		TubeBufferGeometry: TubeBufferGeometry,
-		TorusKnotGeometry: TorusKnotGeometry,
-		TorusKnotBufferGeometry: TorusKnotBufferGeometry,
-		TorusGeometry: TorusGeometry,
-		TorusBufferGeometry: TorusBufferGeometry,
-		TextGeometry: TextGeometry,
-		SphereGeometry: SphereGeometry,
-		SphereBufferGeometry: SphereBufferGeometry,
-		RingGeometry: RingGeometry,
-		RingBufferGeometry: RingBufferGeometry,
-		PlaneGeometry: PlaneGeometry,
-		PlaneBufferGeometry: PlaneBufferGeometry,
-		LatheGeometry: LatheGeometry,
-		LatheBufferGeometry: LatheBufferGeometry,
-		ShapeGeometry: ShapeGeometry,
-		ShapeBufferGeometry: ShapeBufferGeometry,
-		ExtrudeGeometry: ExtrudeGeometry,
-		EdgesGeometry: EdgesGeometry,
-		ConeGeometry: ConeGeometry,
-		ConeBufferGeometry: ConeBufferGeometry,
-		CylinderGeometry: CylinderGeometry,
-		CylinderBufferGeometry: CylinderBufferGeometry,
-		CircleGeometry: CircleGeometry,
-		CircleBufferGeometry: CircleBufferGeometry,
-		BoxGeometry: BoxGeometry,
-		BoxBufferGeometry: BoxBufferGeometry
-	});
-
 	/**
 	 * @author mrdoob / http://mrdoob.com/
 	 */
@@ -42240,6 +42230,12 @@
 					case 'HemisphereLight':
 
 						object = new HemisphereLight( data.color, data.groundColor, data.intensity );
+
+						break;
+
+					case 'RectAreaLight':
+
+						object = new RectAreaLight( data.color, data.intensity, data.width, data.height);
 
 						break;
 
@@ -43426,8 +43422,8 @@
 			0, 0, 0, - 1,   0,   1,
 			0, 0, 0,   0,   1,   1,
 			0, 0, 0,   0, - 1,   1,
-	        1, 0, 1, - 1,   0,   1,
-	        0, 1, 1,   0, - 1,   1
+			1, 0, 1, - 1,   0,   1,
+			0, 1, 1,   0, - 1,   1
 		];
 
 		for ( var i = 0, j = 1, l = 32; i < l; i ++, j ++ ) {
@@ -43449,11 +43445,11 @@
 		this.cone = new LineSegments( geometry, material );
 		this.add( this.cone );
 
-	    geometry = new BufferGeometry();
-	    geometry.addAttribute('position', new Float32BufferAttribute([0, 0, 0, 0, 0, 1], 3));
+		geometry = new BufferGeometry();
+		geometry.addAttribute('position', new Float32BufferAttribute([0, 0, 0, 0, 0, 1], 3));
 
-	    this.targetLine = new LineSegments(geometry, material);
-	    this.add(this.targetLine);
+		this.targetLine = new LineSegments(geometry, material);
+		this.add(this.targetLine);
 
 		this.update();
 
@@ -43467,8 +43463,8 @@
 		this.cone.geometry.dispose();
 		this.cone.material.dispose();
 
-	    this.targetLine.geometry.dispose();
-	    this.targetLine.material.dispose();
+		this.targetLine.geometry.dispose();
+		this.targetLine.material.dispose();
 
 	};
 
@@ -43493,8 +43489,8 @@
 
 			this.cone.material.color.copy( this.light.color ).multiplyScalar( this.light.intensity );
 
-	        this.targetLine.lookAt(vector3);
-	        this.targetLine.scale.z = vector3.length();
+			this.targetLine.lookAt(vector3);
+			this.targetLine.scale.z = vector3.length();
 
 		};
 
@@ -48393,46 +48389,6 @@
 	exports.AudioContext = AudioContext;
 	exports.PositionalAudio = PositionalAudio;
 	exports.AudioListener = AudioListener;
-	exports.BoxGeometry = BoxGeometry;
-	exports.BoxBufferGeometry = BoxBufferGeometry;
-	exports.CircleGeometry = CircleGeometry;
-	exports.CircleBufferGeometry = CircleBufferGeometry;
-	exports.CylinderGeometry = CylinderGeometry;
-	exports.CylinderBufferGeometry = CylinderBufferGeometry;
-	exports.ConeGeometry = ConeGeometry;
-	exports.ConeBufferGeometry = ConeBufferGeometry;
-	exports.EdgesGeometry = EdgesGeometry;
-	exports.ExtrudeGeometry = ExtrudeGeometry;
-	exports.ShapeGeometry = ShapeGeometry;
-	exports.ShapeBufferGeometry = ShapeBufferGeometry;
-	exports.LatheGeometry = LatheGeometry;
-	exports.LatheBufferGeometry = LatheBufferGeometry;
-	exports.PlaneGeometry = PlaneGeometry;
-	exports.PlaneBufferGeometry = PlaneBufferGeometry;
-	exports.RingGeometry = RingGeometry;
-	exports.RingBufferGeometry = RingBufferGeometry;
-	exports.SphereGeometry = SphereGeometry;
-	exports.SphereBufferGeometry = SphereBufferGeometry;
-	exports.TextGeometry = TextGeometry;
-	exports.TorusGeometry = TorusGeometry;
-	exports.TorusBufferGeometry = TorusBufferGeometry;
-	exports.TorusKnotGeometry = TorusKnotGeometry;
-	exports.TorusKnotBufferGeometry = TorusKnotBufferGeometry;
-	exports.TubeGeometry = TubeGeometry;
-	exports.TubeBufferGeometry = TubeBufferGeometry;
-	exports.PolyhedronGeometry = PolyhedronGeometry;
-	exports.PolyhedronBufferGeometry = PolyhedronBufferGeometry;
-	exports.DodecahedronGeometry = DodecahedronGeometry;
-	exports.DodecahedronBufferGeometry = DodecahedronBufferGeometry;
-	exports.IcosahedronGeometry = IcosahedronGeometry;
-	exports.IcosahedronBufferGeometry = IcosahedronBufferGeometry;
-	exports.OctahedronGeometry = OctahedronGeometry;
-	exports.OctahedronBufferGeometry = OctahedronBufferGeometry;
-	exports.TetrahedronGeometry = TetrahedronGeometry;
-	exports.TetrahedronBufferGeometry = TetrahedronBufferGeometry;
-	exports.ParametricGeometry = ParametricGeometry;
-	exports.ParametricBufferGeometry = ParametricBufferGeometry;
-	exports.WireframeGeometry = WireframeGeometry;
 	exports.Scene = Scene;
 	exports.Fog = Fog;
 	exports.FogExp2 = FogExp2;
@@ -48451,23 +48407,6 @@
 	exports.WebGLRenderTarget = WebGLRenderTarget;
 	exports.WebGLRenderTargetCube = WebGLRenderTargetCube;
 	exports.WebGL2Renderer = WebGL2Renderer;
-	exports.Material = Material;
-	exports.PointsMaterial = PointsMaterial;
-	exports.LineBasicMaterial = LineBasicMaterial;
-	exports.LineDashedMaterial = LineDashedMaterial;
-	exports.MeshBasicMaterial = MeshBasicMaterial;
-	exports.MeshDepthMaterial = MeshDepthMaterial;
-	exports.MeshLambertMaterial = MeshLambertMaterial;
-	exports.MeshNormalMaterial = MeshNormalMaterial;
-	exports.MeshToonMaterial = MeshToonMaterial;
-	exports.MeshPhongMaterial = MeshPhongMaterial;
-	exports.MeshStandardMaterial = MeshStandardMaterial;
-	exports.MeshPhysicalMaterial = MeshPhysicalMaterial;
-	exports.SpriteMaterial = SpriteMaterial;
-	exports.MultiMaterial = MultiMaterial;
-	exports.ShaderMaterial = ShaderMaterial;
-	exports.RawShaderMaterial = RawShaderMaterial;
-	exports.ShadowMaterial = ShadowMaterial;
 	exports.Group = Group;
 	exports.Points = Points;
 	exports.LineSegments = LineSegments;
@@ -48690,6 +48629,63 @@
 	exports.Uint8BufferAttribute = Uint8BufferAttribute;
 	exports.Int8BufferAttribute = Int8BufferAttribute;
 	exports.BufferAttribute = BufferAttribute;
+	exports.BoxGeometry = BoxGeometry;
+	exports.BoxBufferGeometry = BoxBufferGeometry;
+	exports.CircleGeometry = CircleGeometry;
+	exports.CircleBufferGeometry = CircleBufferGeometry;
+	exports.CylinderGeometry = CylinderGeometry;
+	exports.CylinderBufferGeometry = CylinderBufferGeometry;
+	exports.ConeGeometry = ConeGeometry;
+	exports.ConeBufferGeometry = ConeBufferGeometry;
+	exports.EdgesGeometry = EdgesGeometry;
+	exports.ExtrudeGeometry = ExtrudeGeometry;
+	exports.ShapeGeometry = ShapeGeometry;
+	exports.ShapeBufferGeometry = ShapeBufferGeometry;
+	exports.LatheGeometry = LatheGeometry;
+	exports.LatheBufferGeometry = LatheBufferGeometry;
+	exports.PlaneGeometry = PlaneGeometry;
+	exports.PlaneBufferGeometry = PlaneBufferGeometry;
+	exports.RingGeometry = RingGeometry;
+	exports.RingBufferGeometry = RingBufferGeometry;
+	exports.SphereGeometry = SphereGeometry;
+	exports.SphereBufferGeometry = SphereBufferGeometry;
+	exports.TextGeometry = TextGeometry;
+	exports.TorusGeometry = TorusGeometry;
+	exports.TorusBufferGeometry = TorusBufferGeometry;
+	exports.TorusKnotGeometry = TorusKnotGeometry;
+	exports.TorusKnotBufferGeometry = TorusKnotBufferGeometry;
+	exports.TubeGeometry = TubeGeometry;
+	exports.TubeBufferGeometry = TubeBufferGeometry;
+	exports.PolyhedronGeometry = PolyhedronGeometry;
+	exports.PolyhedronBufferGeometry = PolyhedronBufferGeometry;
+	exports.DodecahedronGeometry = DodecahedronGeometry;
+	exports.DodecahedronBufferGeometry = DodecahedronBufferGeometry;
+	exports.IcosahedronGeometry = IcosahedronGeometry;
+	exports.IcosahedronBufferGeometry = IcosahedronBufferGeometry;
+	exports.OctahedronGeometry = OctahedronGeometry;
+	exports.OctahedronBufferGeometry = OctahedronBufferGeometry;
+	exports.TetrahedronGeometry = TetrahedronGeometry;
+	exports.TetrahedronBufferGeometry = TetrahedronBufferGeometry;
+	exports.ParametricGeometry = ParametricGeometry;
+	exports.ParametricBufferGeometry = ParametricBufferGeometry;
+	exports.WireframeGeometry = WireframeGeometry;
+	exports.Material = Material;
+	exports.PointsMaterial = PointsMaterial;
+	exports.LineBasicMaterial = LineBasicMaterial;
+	exports.LineDashedMaterial = LineDashedMaterial;
+	exports.MeshBasicMaterial = MeshBasicMaterial;
+	exports.MeshDepthMaterial = MeshDepthMaterial;
+	exports.MeshLambertMaterial = MeshLambertMaterial;
+	exports.MeshNormalMaterial = MeshNormalMaterial;
+	exports.MeshToonMaterial = MeshToonMaterial;
+	exports.MeshPhongMaterial = MeshPhongMaterial;
+	exports.MeshStandardMaterial = MeshStandardMaterial;
+	exports.MeshPhysicalMaterial = MeshPhysicalMaterial;
+	exports.SpriteMaterial = SpriteMaterial;
+	exports.MultiMaterial = MultiMaterial;
+	exports.ShaderMaterial = ShaderMaterial;
+	exports.RawShaderMaterial = RawShaderMaterial;
+	exports.ShadowMaterial = ShadowMaterial;
 
 	Object.defineProperty(exports, '__esModule', { value: true });
 

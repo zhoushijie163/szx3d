@@ -32,6 +32,7 @@ import { Mesh } from '../objects/Mesh';
 import { SkinnedMesh } from '../objects/SkinnedMesh';
 import { Fog } from '../scenes/Fog';
 import { FogExp2 } from '../scenes/FogExp2';
+import { RectAreaLight } from '../lights/RectAreaLight';
 import { HemisphereLight } from '../lights/HemisphereLight';
 import { SpotLight } from '../lights/SpotLight';
 import { PointLight } from '../lights/PointLight';
@@ -634,6 +635,12 @@ Object.assign( ObjectLoader.prototype, {
 				case 'HemisphereLight':
 
 					object = new HemisphereLight( data.color, data.groundColor, data.intensity );
+
+					break;
+
+				case 'RectAreaLight':
+
+					object = new RectAreaLight( data.color, data.intensity, data.width, data.height);
 
 					break;
 
