@@ -527,6 +527,7 @@ Object.assign( ObjectLoader.prototype, {
 	parseObject: function () {
 
 		var matrix = new Matrix4();
+		var targetObj = { };
 
 		return function parseObject( data, geometries, materials ) {
 
@@ -768,6 +769,10 @@ Object.assign( ObjectLoader.prototype, {
 				}
 
 			}
+			
+			if(data.target !== undefined ) targetObj[data.target] = object;
+			
+			if( targetObj[data.uuid] !== undefined ) targetObj[data.uuid].target = object;
 
 			return object;
 

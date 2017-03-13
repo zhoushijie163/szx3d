@@ -37718,6 +37718,8 @@
 			if ( this.decay !== undefined ) data.object.decay = this.decay;
 			if ( this.penumbra !== undefined ) data.object.penumbra = this.penumbra;
 
+			if ( this.target !== undefined ) data.object.target = this.target.uuid;
+			
 			if ( this.shadow !== undefined ) data.object.shadow = this.shadow.toJSON();
 
 			return data;
@@ -42122,6 +42124,7 @@
 		parseObject: function () {
 
 			var matrix = new Matrix4();
+			var targetObj = { };
 
 			return function parseObject( data, geometries, materials ) {
 
@@ -42363,6 +42366,10 @@
 					}
 
 				}
+				
+				if(data.target !== undefined ) targetObj[data.target] = object;
+				
+				if( targetObj[data.uuid] !== undefined ) targetObj[data.uuid].target = object;
 
 				return object;
 
