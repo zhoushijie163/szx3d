@@ -89,7 +89,7 @@ Loader.prototype = {
 
 			function loadTexture( path, repeat, offset, wrap, anisotropy ) {
 
-				var fullPath = texturePath + path;
+				var fullPath = /^(\/\/)|([a-z]+:(\/\/)?)/i.test( path ) ? path : texturePath + path;
 				var loader = Loader.Handlers.get( fullPath );
 
 				var texture;

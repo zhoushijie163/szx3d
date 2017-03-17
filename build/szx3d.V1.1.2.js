@@ -18745,7 +18745,7 @@
                 if (materialLoader === undefined) materialLoader = new MaterialLoader();
                 var textures = {};
                 function loadTexture(path, repeat, offset, wrap, anisotropy) {
-                    var fullPath = texturePath + path;
+                    var fullPath = /^(\/\/)|([a-z]+:(\/\/)?)/i.test(path) ? path : texturePath + path;
                     var loader = Loader.Handlers.get(fullPath);
                     var texture;
                     if (loader !== null) {
