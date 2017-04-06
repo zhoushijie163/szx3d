@@ -120,22 +120,6 @@ export { DirectionalLightShadow } from './lights/DirectionalLightShadow.js';
 export { SpotLight } from './lights/SpotLight.js';
 export { SpotLightShadow } from './lights/SpotLightShadow.js';
 
-export { AudioLoader } from './loaders/AudioLoader.js';
-export { Cache } from './loaders/Cache.js';
-export { Loader } from './loaders/Loader.js';
-export { FileLoader } from './loaders/FileLoader.js';
-export { FontLoader } from './loaders/FontLoader.js';
-export { ImageLoader } from './loaders/ImageLoader.js';
-export { JSONLoader } from './loaders/JSONLoader.js';
-export { DefaultLoadingManager, LoadingManager } from './loaders/LoadingManager.js';
-export { BufferGeometryLoader } from './loaders/BufferGeometryLoader.js';
-export { TextureLoader } from './loaders/TextureLoader.js';
-export { CubeTextureLoader } from './loaders/CubeTextureLoader.js';
-export { DataTextureLoader } from './loaders/DataTextureLoader.js';
-export { CompressedTextureLoader } from './loaders/CompressedTextureLoader.js';
-export { MaterialLoader } from './loaders/MaterialLoader.js';
-export { ObjectLoader } from './loaders/ObjectLoader.js';
-
 export { AxisHelper } from './helpers/AxisHelper.js';
 export { ArrowHelper } from './helpers/ArrowHelper.js';
 export { BoxHelper } from './helpers/BoxHelper.js';
@@ -171,12 +155,33 @@ export { LineCurve3 } from './extras/curves/LineCurve3.js';
 export { QuadraticBezierCurve3 } from './extras/curves/QuadraticBezierCurve3.js';
 export { CubicBezierCurve3 } from './extras/curves/CubicBezierCurve3.js';
 export { CatmullRomCurve3 } from './extras/curves/CatmullRomCurve3.js';
+export { NURBSUtils } from './extras/curves/NURBSUtils.js';
+export { NURBSCurve } from './extras/curves/NURBSCurve.js';
+export { NURBSSurface } from './extras/curves/NURBSSurface.js';
+
 export { ImmediateRenderObject } from './extras/objects/ImmediateRenderObject.js';
 export { MorphBlendMesh } from './extras/objects/MorphBlendMesh.js';
 
 export { Projector } from './renderers/canvas/Projector.js';
 export { SpriteCanvasMaterial } from './renderers/canvas/SpriteCanvasMaterial.js';
 export { CanvasRenderer } from './renderers/CanvasRenderer.js';
+
+export { AudioLoader } from './loaders/AudioLoader.js';
+export { Cache } from './loaders/Cache.js';
+export { Loader } from './loaders/Loader.js';
+export { FileLoader } from './loaders/FileLoader.js';
+export { FontLoader } from './loaders/FontLoader.js';
+export { ImageLoader } from './loaders/ImageLoader.js';
+export { JSONLoader } from './loaders/JSONLoader.js';
+export { DefaultLoadingManager, LoadingManager } from './loaders/LoadingManager.js';
+export { BufferGeometryLoader } from './loaders/BufferGeometryLoader.js';
+export { TextureLoader } from './loaders/TextureLoader.js';
+export { CubeTextureLoader } from './loaders/CubeTextureLoader.js';
+export { DataTextureLoader } from './loaders/DataTextureLoader.js';
+export { CompressedTextureLoader } from './loaders/CompressedTextureLoader.js';
+export { MaterialLoader } from './loaders/MaterialLoader.js';
+export { ObjectLoader } from './loaders/ObjectLoader.js';
+export { FBXLoader } from './loaders/FBXLoader.js';
 
 export { PlanControls } from './controls/PlanControls.js';
 export { EditorControls } from './controls/EditorControls.js';

@@ -769,7 +769,7 @@ Object.assign( ObjectLoader.prototype, {
 				}
 
 			}
-			
+
 			if(data.target !== undefined ) targetObj[data.target] = object;
 			
 			if( targetObj[data.uuid] !== undefined ) targetObj[data.uuid].target = object;
@@ -781,6 +781,5 @@ Object.assign( ObjectLoader.prototype, {
 	}()
 
 } );
-
 
 export { ObjectLoader };
