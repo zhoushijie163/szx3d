@@ -20050,7 +20050,7 @@
         }
         return new Vector3(px.calc(weight), py.calc(weight), pz.calc(weight));
     };
-    NURBSUtils = {
+    var NURBSUtils = {
         findSpan: function(p, u, U) {
             var n = U.length - p - 1;
             if (u >= U[n]) {
@@ -20263,7 +20263,7 @@
             return new Vector3(Sw.x, Sw.y, Sw.z);
         }
     };
-    NURBSCurve = function(degree, knots, controlPoints) {
+    function NURBSCurve(degree, knots, controlPoints) {
         this.degree = degree;
         this.knots = knots;
         this.controlPoints = [];
@@ -20271,7 +20271,7 @@
             var point = controlPoints[i];
             this.controlPoints[i] = new Vector4(point.x, point.y, point.z, point.w);
         }
-    };
+    }
     NURBSCurve.prototype = Object.create(Curve.prototype);
     NURBSCurve.prototype.constructor = NURBSCurve;
     NURBSCurve.prototype.getPoint = function(t) {
@@ -20289,7 +20289,7 @@
         tangent.normalize();
         return tangent;
     };
-    NURBSSurface = function(degree1, degree2, knots1, knots2, controlPoints) {
+    function NURBSSurface(degree1, degree2, knots1, knots2, controlPoints) {
         this.degree1 = degree1;
         this.degree2 = degree2;
         this.knots1 = knots1;
@@ -20304,7 +20304,7 @@
                 this.controlPoints[i][j] = new Vector4(point.x, point.y, point.z, point.w);
             }
         }
-    };
+    }
     NURBSSurface.prototype = {
         constructor: NURBSSurface,
         getPoint: function(t1, t2) {
@@ -24858,6 +24858,8 @@
         };
         this.focus = function(target) {
             var box = new Box3().setFromObject(target);
+            var delta = new Vector3().copy(box.getCenter()).sub(scope.center);
+            object.position.add(delta);
             object.lookAt(scope.center.copy(box.getCenter()));
             scope.dispatchEvent(changeEvent);
         };
@@ -25974,6 +25976,17 @@
     }
     TransformControls.prototype = Object.create(Object3D.prototype);
     TransformControls.prototype.constructor = TransformControls;
+    function PanoramaControls(object, domElement) {
+        domElement = domElement !== undefined ? domElement : document;
+        this.enabled = true;
+        this.center = new Vector3();
+        this.zoomSpeed = .001;
+        this.rotationSpeed = .005;
+        var scope = this;
+        var vector = new Vector3();
+    }
+    PanoramaControls.prototype = Object.create(EventDispatcher.prototype);
+    PanoramaControls.prototype.constructor = PanoramaControls;
     exports.Math = _Math;
     exports.Color = Color;
     exports.Vector2 = Vector2;
@@ -26140,6 +26153,7 @@
     exports.EditorControls = EditorControls;
     exports.GameControls = GameControls;
     exports.TransformControls = TransformControls;
+    exports.PanoramaControls = PanoramaControls;
     exports.REVISION = REVISION;
     exports.MOUSE = MOUSE;
     exports.CullFaceNone = CullFaceNone;

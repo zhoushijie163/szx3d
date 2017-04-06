@@ -36,6 +36,9 @@ function PlanControls( object, domElement ) {
 	this.focus = function ( target ) {
 
 		var box = new Box3().setFromObject( target );
+		var delta = new Vector3().copy(box.getCenter()).sub(scope.center);
+		object.position.add( delta );
+		//scope.center.copy( box.getCenter() );
 		object.lookAt( scope.center.copy( box.getCenter() ) );
 		scope.dispatchEvent( changeEvent );
 

@@ -41412,7 +41412,7 @@ CatmullRomCurve3.prototype.getPoint = function ( t ) {
  *	NURBS Utils
  **************************************************************/
 
-NURBSUtils = {
+var NURBSUtils = {
 
 	/*
 	Finds knot vector span.
@@ -41884,7 +41884,7 @@ NURBSUtils = {
  *	NURBS curve
  **************************************************************/
 
-NURBSCurve = function ( degree, knots /* array of reals */, controlPoints /* array of Vector(2|3|4) */ ) {
+function NURBSCurve( degree, knots /* array of reals */, controlPoints /* array of Vector(2|3|4) */ ) {
 
 	this.degree = degree;
 	this.knots = knots;
@@ -41897,7 +41897,7 @@ NURBSCurve = function ( degree, knots /* array of reals */, controlPoints /* arr
 
 	}
 
-};
+}
 
 
 NURBSCurve.prototype = Object.create( Curve.prototype );
@@ -41947,7 +41947,7 @@ NURBSCurve.prototype.getTangent = function ( t ) {
  *	NURBS surface
  **************************************************************/
 
-NURBSSurface = function ( degree1, degree2, knots1, knots2 /* arrays of reals */, controlPoints /* array^2 of Vector(2|3|4) */ ) {
+function NURBSSurface( degree1, degree2, knots1, knots2 /* arrays of reals */, controlPoints /* array^2 of Vector(2|3|4) */ ) {
 
 	this.degree1 = degree1;
 	this.degree2 = degree2;
@@ -41971,7 +41971,7 @@ NURBSSurface = function ( degree1, degree2, knots1, knots2 /* arrays of reals */
 
 	}
 
-};
+}
 
 
 NURBSSurface.prototype = {
@@ -50362,6 +50362,9 @@ function PlanControls( object, domElement ) {
 	this.focus = function ( target ) {
 
 		var box = new Box3().setFromObject( target );
+		var delta = new Vector3().copy(box.getCenter()).sub(scope.center);
+		object.position.add( delta );
+		//scope.center.copy( box.getCenter() );
 		object.lookAt( scope.center.copy( box.getCenter() ) );
 		scope.dispatchEvent( changeEvent );
 
@@ -52134,4 +52137,25 @@ function TransformControls( camera, domElement ) {
 TransformControls.prototype = Object.create( Object3D.prototype );
 TransformControls.prototype.constructor = TransformControls;
 
-export { _Math as Math, Color, Vector2, Vector4, Matrix4, Vector3, Quaternion, Matrix3, Euler, Line3, Box2, Sphere, Box3, Ray, Plane, Frustum, Spherical, Cylindrical, Triangle, Interpolant, CubicInterpolant, DiscreteInterpolant, LinearInterpolant, QuaternionLinearInterpolant, Clock, EventDispatcher, Layers, Raycaster, Object3D, Face3, InstancedBufferAttribute, InterleavedBuffer, InstancedInterleavedBuffer, InterleavedBufferAttribute, GeometryIdCount, Geometry, BufferGeometry, InstancedBufferGeometry, Uniform, AnimationAction, AnimationUtils, KeyframeTrackConstructor, KeyframeTrackPrototype, BooleanKeyframeTrack, ColorKeyframeTrack, NumberKeyframeTrack, QuaternionKeyframeTrack, StringKeyframeTrack, VectorKeyframeTrack, KeyframeTrack, AnimationClip, PropertyBinding, PropertyMixer, AnimationMixer, AnimationObjectGroup, Audio, AudioAnalyser, AudioContext, PositionalAudio, AudioListener, Scene, Fog, FogExp2, Texture, DepthTexture, CanvasTexture, CubeTexture, CompressedTexture, DataTexture, VideoTexture, ShaderChunk, UniformsUtils, UniformsLib, ShaderLib, WebGLRenderer, WebGLRenderTarget, WebGLRenderTargetCube, WebGL2Renderer, Group, Points, LineSegments, Line, Mesh, Bone, Skeleton, SkinnedMesh, LOD, Sprite, LensFlare, Camera, OrthographicCamera, PerspectiveCamera, StereoCamera, CubeCamera, Light, LightShadow, AmbientLight, HemisphereLight, RectAreaLight, PointLight, DirectionalLight, DirectionalLightShadow, SpotLight, SpotLightShadow, AxisHelper, ArrowHelper, BoxHelper, CameraHelper, FaceNormalsHelper, PolarGridHelper, GridHelper, AmbientLightHelper, HemisphereLightHelper, PointLightHelper, RectAreaLightHelper, DirectionalLightHelper, SpotLightHelper, LightTargetHelper, SkeletonHelper, VertexNormalsHelper, SceneUtils, ShapeUtils, Curve, CurvePath, Font, ShapePath, Path, Shape, LineCurve, QuadraticBezierCurve, CubicBezierCurve, SplineCurve, EllipseCurve, ArcCurve, LineCurve3, QuadraticBezierCurve3, CubicBezierCurve3, CatmullRomCurve3, NURBSUtils, NURBSCurve, NURBSSurface, ImmediateRenderObject, MorphBlendMesh, Projector, SpriteCanvasMaterial, CanvasRenderer, AudioLoader, Cache, Loader, FileLoader, FontLoader, ImageLoader, JSONLoader, DefaultLoadingManager, LoadingManager, BufferGeometryLoader, TextureLoader, CubeTextureLoader, DataTextureLoader, CompressedTextureLoader, MaterialLoader, ObjectLoader, FBXLoader, PlanControls, EditorControls, GameControls, TransformControls, REVISION, MOUSE, CullFaceNone, CullFaceBack, CullFaceFront, CullFaceFrontBack, FrontFaceDirectionCW, FrontFaceDirectionCCW, BasicShadowMap, PCFShadowMap, PCFSoftShadowMap, FrontSide, BackSide, DoubleSide, FlatShading, SmoothShading, NoColors, FaceColors, VertexColors, NoBlending, NormalBlending, AdditiveBlending, SubtractiveBlending, MultiplyBlending, CustomBlending, AddEquation, SubtractEquation, ReverseSubtractEquation, MinEquation, MaxEquation, ZeroFactor, OneFactor, SrcColorFactor, OneMinusSrcColorFactor, SrcAlphaFactor, OneMinusSrcAlphaFactor, DstAlphaFactor, OneMinusDstAlphaFactor, DstColorFactor, OneMinusDstColorFactor, SrcAlphaSaturateFactor, NeverDepth, AlwaysDepth, LessDepth, LessEqualDepth, EqualDepth, GreaterEqualDepth, GreaterDepth, NotEqualDepth, MultiplyOperation, MixOperation, AddOperation, NoToneMapping, LinearToneMapping, ReinhardToneMapping, Uncharted2ToneMapping, CineonToneMapping, UVMapping, CubeReflectionMapping, CubeRefractionMapping, EquirectangularReflectionMapping, EquirectangularRefractionMapping, SphericalReflectionMapping, CubeUVReflectionMapping, CubeUVRefractionMapping, RepeatWrapping, ClampToEdgeWrapping, MirroredRepeatWrapping, NearestFilter, NearestMipMapNearestFilter, NearestMipMapLinearFilter, LinearFilter, LinearMipMapNearestFilter, LinearMipMapLinearFilter, UnsignedByteType, ByteType, ShortType, UnsignedShortType, IntType, UnsignedIntType, FloatType, HalfFloatType, UnsignedShort4444Type, UnsignedShort5551Type, UnsignedShort565Type, UnsignedInt248Type, AlphaFormat, RGBFormat, RGBAFormat, LuminanceFormat, LuminanceAlphaFormat, RGBEFormat, DepthFormat, DepthStencilFormat, RGB_S3TC_DXT1_Format, RGBA_S3TC_DXT1_Format, RGBA_S3TC_DXT3_Format, RGBA_S3TC_DXT5_Format, RGB_PVRTC_4BPPV1_Format, RGB_PVRTC_2BPPV1_Format, RGBA_PVRTC_4BPPV1_Format, RGBA_PVRTC_2BPPV1_Format, RGB_ETC1_Format, LoopOnce, LoopRepeat, LoopPingPong, InterpolateDiscrete, InterpolateLinear, InterpolateSmooth, ZeroCurvatureEnding, ZeroSlopeEnding, WrapAroundEnding, TrianglesDrawMode, TriangleStripDrawMode, TriangleFanDrawMode, LinearEncoding, sRGBEncoding, GammaEncoding, RGBEEncoding, LogLuvEncoding, RGBM7Encoding, RGBM16Encoding, RGBDEncoding, BasicDepthPacking, RGBADepthPacking, arrayMin, arrayMax, Float64BufferAttribute, Float32BufferAttribute, Uint32BufferAttribute, Int32BufferAttribute, Uint16BufferAttribute, Int16BufferAttribute, Uint8ClampedBufferAttribute, Uint8BufferAttribute, Int8BufferAttribute, BufferAttribute, BoxGeometry, BoxBufferGeometry, CircleGeometry, CircleBufferGeometry, CylinderGeometry, CylinderBufferGeometry, ConeGeometry, ConeBufferGeometry, EdgesGeometry, ExtrudeGeometry, ShapeGeometry, ShapeBufferGeometry, LatheGeometry, LatheBufferGeometry, PlaneGeometry, PlaneBufferGeometry, RingGeometry, RingBufferGeometry, SphereGeometry, SphereBufferGeometry, TextGeometry, TorusGeometry, TorusBufferGeometry, TorusKnotGeometry, TorusKnotBufferGeometry, TubeGeometry, TubeBufferGeometry, PolyhedronGeometry, PolyhedronBufferGeometry, DodecahedronGeometry, DodecahedronBufferGeometry, IcosahedronGeometry, IcosahedronBufferGeometry, OctahedronGeometry, OctahedronBufferGeometry, TetrahedronGeometry, TetrahedronBufferGeometry, ParametricGeometry, ParametricBufferGeometry, WireframeGeometry, Material, PointsMaterial, LineBasicMaterial, LineDashedMaterial, MeshBasicMaterial, MeshDepthMaterial, MeshLambertMaterial, MeshNormalMaterial, MeshToonMaterial, MeshPhongMaterial, MeshStandardMaterial, MeshPhysicalMaterial, SpriteMaterial, MultiMaterial, ShaderMaterial, RawShaderMaterial, ShadowMaterial };
+function PanoramaControls( object, domElement ) {
+	
+    domElement = ( domElement !== undefined ) ? domElement : document;
+ 
+ 	// API
+ 	
+	this.enabled = true;
+	this.center = new Vector3();
+	this.zoomSpeed = 0.001;
+	this.rotationSpeed = 0.005;
+
+	// internals
+
+	var scope = this;
+	var vector = new Vector3();
+
+}
+
+PanoramaControls.prototype = Object.create( EventDispatcher.prototype );
+PanoramaControls.prototype.constructor = PanoramaControls;
+
+export { _Math as Math, Color, Vector2, Vector4, Matrix4, Vector3, Quaternion, Matrix3, Euler, Line3, Box2, Sphere, Box3, Ray, Plane, Frustum, Spherical, Cylindrical, Triangle, Interpolant, CubicInterpolant, DiscreteInterpolant, LinearInterpolant, QuaternionLinearInterpolant, Clock, EventDispatcher, Layers, Raycaster, Object3D, Face3, InstancedBufferAttribute, InterleavedBuffer, InstancedInterleavedBuffer, InterleavedBufferAttribute, GeometryIdCount, Geometry, BufferGeometry, InstancedBufferGeometry, Uniform, AnimationAction, AnimationUtils, KeyframeTrackConstructor, KeyframeTrackPrototype, BooleanKeyframeTrack, ColorKeyframeTrack, NumberKeyframeTrack, QuaternionKeyframeTrack, StringKeyframeTrack, VectorKeyframeTrack, KeyframeTrack, AnimationClip, PropertyBinding, PropertyMixer, AnimationMixer, AnimationObjectGroup, Audio, AudioAnalyser, AudioContext, PositionalAudio, AudioListener, Scene, Fog, FogExp2, Texture, DepthTexture, CanvasTexture, CubeTexture, CompressedTexture, DataTexture, VideoTexture, ShaderChunk, UniformsUtils, UniformsLib, ShaderLib, WebGLRenderer, WebGLRenderTarget, WebGLRenderTargetCube, WebGL2Renderer, Group, Points, LineSegments, Line, Mesh, Bone, Skeleton, SkinnedMesh, LOD, Sprite, LensFlare, Camera, OrthographicCamera, PerspectiveCamera, StereoCamera, CubeCamera, Light, LightShadow, AmbientLight, HemisphereLight, RectAreaLight, PointLight, DirectionalLight, DirectionalLightShadow, SpotLight, SpotLightShadow, AxisHelper, ArrowHelper, BoxHelper, CameraHelper, FaceNormalsHelper, PolarGridHelper, GridHelper, AmbientLightHelper, HemisphereLightHelper, PointLightHelper, RectAreaLightHelper, DirectionalLightHelper, SpotLightHelper, LightTargetHelper, SkeletonHelper, VertexNormalsHelper, SceneUtils, ShapeUtils, Curve, CurvePath, Font, ShapePath, Path, Shape, LineCurve, QuadraticBezierCurve, CubicBezierCurve, SplineCurve, EllipseCurve, ArcCurve, LineCurve3, QuadraticBezierCurve3, CubicBezierCurve3, CatmullRomCurve3, NURBSUtils, NURBSCurve, NURBSSurface, ImmediateRenderObject, MorphBlendMesh, Projector, SpriteCanvasMaterial, CanvasRenderer, AudioLoader, Cache, Loader, FileLoader, FontLoader, ImageLoader, JSONLoader, DefaultLoadingManager, LoadingManager, BufferGeometryLoader, TextureLoader, CubeTextureLoader, DataTextureLoader, CompressedTextureLoader, MaterialLoader, ObjectLoader, FBXLoader, PlanControls, EditorControls, GameControls, TransformControls, PanoramaControls, REVISION, MOUSE, CullFaceNone, CullFaceBack, CullFaceFront, CullFaceFrontBack, FrontFaceDirectionCW, FrontFaceDirectionCCW, BasicShadowMap, PCFShadowMap, PCFSoftShadowMap, FrontSide, BackSide, DoubleSide, FlatShading, SmoothShading, NoColors, FaceColors, VertexColors, NoBlending, NormalBlending, AdditiveBlending, SubtractiveBlending, MultiplyBlending, CustomBlending, AddEquation, SubtractEquation, ReverseSubtractEquation, MinEquation, MaxEquation, ZeroFactor, OneFactor, SrcColorFactor, OneMinusSrcColorFactor, SrcAlphaFactor, OneMinusSrcAlphaFactor, DstAlphaFactor, OneMinusDstAlphaFactor, DstColorFactor, OneMinusDstColorFactor, SrcAlphaSaturateFactor, NeverDepth, AlwaysDepth, LessDepth, LessEqualDepth, EqualDepth, GreaterEqualDepth, GreaterDepth, NotEqualDepth, MultiplyOperation, MixOperation, AddOperation, NoToneMapping, LinearToneMapping, ReinhardToneMapping, Uncharted2ToneMapping, CineonToneMapping, UVMapping, CubeReflectionMapping, CubeRefractionMapping, EquirectangularReflectionMapping, EquirectangularRefractionMapping, SphericalReflectionMapping, CubeUVReflectionMapping, CubeUVRefractionMapping, RepeatWrapping, ClampToEdgeWrapping, MirroredRepeatWrapping, NearestFilter, NearestMipMapNearestFilter, NearestMipMapLinearFilter, LinearFilter, LinearMipMapNearestFilter, LinearMipMapLinearFilter, UnsignedByteType, ByteType, ShortType, UnsignedShortType, IntType, UnsignedIntType, FloatType, HalfFloatType, UnsignedShort4444Type, UnsignedShort5551Type, UnsignedShort565Type, UnsignedInt248Type, AlphaFormat, RGBFormat, RGBAFormat, LuminanceFormat, LuminanceAlphaFormat, RGBEFormat, DepthFormat, DepthStencilFormat, RGB_S3TC_DXT1_Format, RGBA_S3TC_DXT1_Format, RGBA_S3TC_DXT3_Format, RGBA_S3TC_DXT5_Format, RGB_PVRTC_4BPPV1_Format, RGB_PVRTC_2BPPV1_Format, RGBA_PVRTC_4BPPV1_Format, RGBA_PVRTC_2BPPV1_Format, RGB_ETC1_Format, LoopOnce, LoopRepeat, LoopPingPong, InterpolateDiscrete, InterpolateLinear, InterpolateSmooth, ZeroCurvatureEnding, ZeroSlopeEnding, WrapAroundEnding, TrianglesDrawMode, TriangleStripDrawMode, TriangleFanDrawMode, LinearEncoding, sRGBEncoding, GammaEncoding, RGBEEncoding, LogLuvEncoding, RGBM7Encoding, RGBM16Encoding, RGBDEncoding, BasicDepthPacking, RGBADepthPacking, arrayMin, arrayMax, Float64BufferAttribute, Float32BufferAttribute, Uint32BufferAttribute, Int32BufferAttribute, Uint16BufferAttribute, Int16BufferAttribute, Uint8ClampedBufferAttribute, Uint8BufferAttribute, Int8BufferAttribute, BufferAttribute, BoxGeometry, BoxBufferGeometry, CircleGeometry, CircleBufferGeometry, CylinderGeometry, CylinderBufferGeometry, ConeGeometry, ConeBufferGeometry, EdgesGeometry, ExtrudeGeometry, ShapeGeometry, ShapeBufferGeometry, LatheGeometry, LatheBufferGeometry, PlaneGeometry, PlaneBufferGeometry, RingGeometry, RingBufferGeometry, SphereGeometry, SphereBufferGeometry, TextGeometry, TorusGeometry, TorusBufferGeometry, TorusKnotGeometry, TorusKnotBufferGeometry, TubeGeometry, TubeBufferGeometry, PolyhedronGeometry, PolyhedronBufferGeometry, DodecahedronGeometry, DodecahedronBufferGeometry, IcosahedronGeometry, IcosahedronBufferGeometry, OctahedronGeometry, OctahedronBufferGeometry, TetrahedronGeometry, TetrahedronBufferGeometry, ParametricGeometry, ParametricBufferGeometry, WireframeGeometry, Material, PointsMaterial, LineBasicMaterial, LineDashedMaterial, MeshBasicMaterial, MeshDepthMaterial, MeshLambertMaterial, MeshNormalMaterial, MeshToonMaterial, MeshPhongMaterial, MeshStandardMaterial, MeshPhysicalMaterial, SpriteMaterial, MultiMaterial, ShaderMaterial, RawShaderMaterial, ShadowMaterial };

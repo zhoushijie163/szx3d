@@ -41416,7 +41416,7 @@
 	 *	NURBS Utils
 	 **************************************************************/
 
-	NURBSUtils = {
+	var NURBSUtils = {
 
 		/*
 		Finds knot vector span.
@@ -41888,7 +41888,7 @@
 	 *	NURBS curve
 	 **************************************************************/
 
-	NURBSCurve = function ( degree, knots /* array of reals */, controlPoints /* array of Vector(2|3|4) */ ) {
+	function NURBSCurve( degree, knots /* array of reals */, controlPoints /* array of Vector(2|3|4) */ ) {
 
 		this.degree = degree;
 		this.knots = knots;
@@ -41901,7 +41901,7 @@
 
 		}
 
-	};
+	}
 
 
 	NURBSCurve.prototype = Object.create( Curve.prototype );
@@ -41951,7 +41951,7 @@
 	 *	NURBS surface
 	 **************************************************************/
 
-	NURBSSurface = function ( degree1, degree2, knots1, knots2 /* arrays of reals */, controlPoints /* array^2 of Vector(2|3|4) */ ) {
+	function NURBSSurface( degree1, degree2, knots1, knots2 /* arrays of reals */, controlPoints /* array^2 of Vector(2|3|4) */ ) {
 
 		this.degree1 = degree1;
 		this.degree2 = degree2;
@@ -41975,7 +41975,7 @@
 
 		}
 
-	};
+	}
 
 
 	NURBSSurface.prototype = {
@@ -50366,6 +50366,9 @@
 		this.focus = function ( target ) {
 
 			var box = new Box3().setFromObject( target );
+			var delta = new Vector3().copy(box.getCenter()).sub(scope.center);
+			object.position.add( delta );
+			//scope.center.copy( box.getCenter() );
 			object.lookAt( scope.center.copy( box.getCenter() ) );
 			scope.dispatchEvent( changeEvent );
 
@@ -52138,6 +52141,27 @@
 	TransformControls.prototype = Object.create( Object3D.prototype );
 	TransformControls.prototype.constructor = TransformControls;
 
+	function PanoramaControls( object, domElement ) {
+		
+	    domElement = ( domElement !== undefined ) ? domElement : document;
+	 
+	 	// API
+	 	
+		this.enabled = true;
+		this.center = new Vector3();
+		this.zoomSpeed = 0.001;
+		this.rotationSpeed = 0.005;
+
+		// internals
+
+		var scope = this;
+		var vector = new Vector3();
+
+	}
+
+	PanoramaControls.prototype = Object.create( EventDispatcher.prototype );
+	PanoramaControls.prototype.constructor = PanoramaControls;
+
 	exports.Math = _Math;
 	exports.Color = Color;
 	exports.Vector2 = Vector2;
@@ -52304,6 +52328,7 @@
 	exports.EditorControls = EditorControls;
 	exports.GameControls = GameControls;
 	exports.TransformControls = TransformControls;
+	exports.PanoramaControls = PanoramaControls;
 	exports.REVISION = REVISION;
 	exports.MOUSE = MOUSE;
 	exports.CullFaceNone = CullFaceNone;

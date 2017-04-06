@@ -187,3 +187,5 @@ export { PlanControls } from './controls/PlanControls.js';
 export { EditorControls } from './controls/EditorControls.js';
 export { GameControls } from './controls/GameControls.js';
 export { TransformControls } from './controls/TransformControls.js';
+export { PanoramaControls } from './controls/PanoramaControls.js';
+

@@ -14,7 +14,7 @@ import { Vector4 } from '../../math/Vector4';
  *	NURBS Utils
  **************************************************************/
 
-NURBSUtils = {
+var NURBSUtils = {
 
 	/*
 	Finds knot vector span.
