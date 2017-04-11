@@ -291,12 +291,12 @@ rollout SZX3DExporter "三维模型导出工具"
 				Format "\"%\": \"%\",\n" label fname to:ostream
 				if flipUV.checked then
 				(
-				    Format "\"%Offset\": [ %, % ],\n" label pmap.coords.U_Offset (1 - pmap.coords.V_Offset) to:ostream
+					Format "\"%Offset\": [ %, % ],\n" label pmap.coords.U_Offset (1 - pmap.coords.V_Offset) to:ostream
 				) 
 				else
 				(
-    				Format "\"%Offset\": [ %, % ],\n" label pmap.coords.U_Offset pmap.coords.V_Offset to:ostream
-    			)
+					Format "\"%Offset\": [ %, % ],\n" label pmap.coords.U_Offset pmap.coords.V_Offset to:ostream
+				)
 				Format "\"%Repeat\": [ %, % ],\n" label pmap.coords.U_Tiling pmap.coords.V_Tiling to:ostream
 				wrapu = "repeat"
 				wrapv = "repeat"
@@ -319,7 +319,8 @@ rollout SZX3DExporter "三维模型导出工具"
 			Format "{\n" to:ostream
 			-- debug
 			Format "\"DbgIndex\": %,\n" (i-1) to:ostream
-			if classof mat != BooleanClass then
+			matClass = classof mat
+			if matClass == StandardMaterial then
 			(
 				useVertexColors = zcolors[i]
 				Format "\"DbgName\": \"%\",\n" mat.name to:ostream
@@ -328,8 +329,6 @@ rollout SZX3DExporter "三维模型导出工具"
 				--DumpColor mat.ambient  "colorAmbient"
 				DumpColor mat.specular "colorSpecular"
 				DumpColor mat.selfIllumColor "colorEmissive"
-				t = mat.opacity / 100
-				s = mat.glossiness
 				if mat.shaderType == 5 then
 				(
 					Format "\"shading\": \"phong\",\n" to:ostream
@@ -338,23 +337,50 @@ rollout SZX3DExporter "三维模型导出工具"
 				(
 					Format "\"shading\": \"standard\",\n" to:ostream
 				)
-				Format "\"opacity\": %,\n" t to:ostream
-				Format "\"specularCoef\": %,\n" s to:ostream
+				Format "\"opacity\": %,\n" (mat.opacity / 100) to:ostream
+				Format "\"specularCoef\": %,\n" mat.glossiness to:ostream
 				if mat.TwoSided or doubleSide.checked then
 				(
-    				Format "\"doubleSided\": true,\n" to:ostream
-    			)
+					Format "\"doubleSided\": true,\n" to:ostream
+				)
 				-- maps
 				DumpMap mat.diffuseMap  "mapDiffuse"
 				--DumpMap mat.ambientMap  "mapAmbient"
 				DumpMap mat.specularMap "mapSpecular"
 				DumpMap mat.bumpMap 	"mapBump"
 				DumpMap mat.opacityMap 	"mapAlpha"
-				DumpMap mat.specularLevelMap "mapMetalness"
+				--DumpMap mat.specularLevelMap "mapMetalness"
 				DumpMap mat.selfillumMap "mapEmissive"
-				DumpMap mat.glossinessMap "mapRoughness"
-				DumpMap mat.orientationMap "mapNormal"
-				DumpMap mat.diffuseLevelMap "mapLight"
+				--DumpMap mat.glossinessMap "mapRoughness"
+				--DumpMap mat.orientationMap "mapNormal"
+				--DumpMap mat.diffuseLevelMap "mapLight"
+			)
+			else if matClass == VrayMtl then 
+			(
+				useVertexColors = zcolors[i]
+				Format "\"DbgName\": \"%\",\n" mat.name to:ostream
+				-- colors
+				DumpColor mat.diffuse  "colorDiffuse"
+				DumpColor mat.selfIllumColor "colorEmissive"
+				
+				Format "\"shading\": \"standard\",\n" to:ostream
+				Format "\"opacity\": %,\n" mat.translucency_multiplier to:ostream
+				Format "\"specularCoef\": %,\n" mat.hilight_glossiness to:ostream
+				if mat.option_doubleSided or doubleSide.checked then
+				(
+					Format "\"doubleSided\": true,\n" to:ostream
+				)
+				-- maps
+				DumpMap mat.texmap_diffuse "mapDiffuse"
+				--DumpMap mat.ambientMap  "mapAmbient"
+				--DumpMap mat.specularMap "mapSpecular"
+				DumpMap mat.texmap_bump	"mapBump"
+				DumpMap mat.texmap_opacity "mapAlpha"
+				DumpMap mat.texmap_self_illumination "mapEmissive"
+				DumpMap mat.texmap_roughness "mapRoughness"
+				DumpMap mat.texmap_hilightGlossiness "mapMetalness"
+				--DumpMap mat.orientationMap "mapNormal"
+				--DumpMap mat.diffuseLevelMap "mapLight"
 			)
 			else
 			(
@@ -541,7 +567,7 @@ rollout SZX3DExporter "三维模型导出工具"
 	function ExtractMaterials objMesh objMaterial whereto wheretoColors zname hasVColors =
 	(
 		materialClass = classof objMaterial
-		if materialClass == StandardMaterial then
+		if (materialClass == StandardMaterial) or  (matClass == VrayMtl) then
 		(
 			if ( findItem whereto objMaterial ) == 0 then
 			(
@@ -560,7 +586,7 @@ rollout SZX3DExporter "三维模型导出工具"
 				(
 					subMaterial = objMaterial.materialList[materialIndex]
 					subMaterialClass = classof subMaterial
-					if subMaterialClass == StandardMaterial then
+					if (subMaterialClass == StandardMaterial) or ( matClass == VrayMtl) then
 					(
 						if ( findItem whereto subMaterial ) == 0 then
 						(
@@ -568,11 +594,16 @@ rollout SZX3DExporter "三维模型导出工具"
 							append wheretoColors hasVColors
 						)
 					)
+					else
+					(
+						append whereto false
+						append wheretoColors false
+					)
 				) 
 				else
 				(
-				    append whereto false
-				    append wheretoColors false
+					append whereto false
+					append wheretoColors false
 				)
 			)
 		)
@@ -731,14 +762,37 @@ rollout SZX3DExporter "三维模型导出工具"
 	-- Export button click handler
 	on btn_export pressed do
 	(
-	    --导出前统一单位到厘米
-	    --oldratio = units.decodeValue "1.0cm"
-	    --oldSystemType = units.SystemType
-	    local oldMetricType = units.MetricType
-	    --units.SystemType = #centimeters
-        units.MetricType = #centimeters
- 	    --in coordsys world about coordsys scale objects [(1.0 / oldratio),(1.0 / oldratio),(1.0 / oldratio)]  --全局缩放
-       
+		if selection.count == 0 then
+		(
+			messagebox "请选择要导出的模型！"
+			--DestroyDialog SZX3DExporter
+			return false
+		)
+		else if selection.count > 8 then
+		(
+			messagebox "选择的模型过多,会导致系统无响应而无法正常导出。\n现在中止导出！" 
+			--DestroyDialog SZX3DExporter
+			return false
+
+		)
+		else if selection.count > 2 then
+		(
+			if querybox "选择的模型较多,导出过程会很缓慢；\n也会有可能导致系统无响应而无法正常导出。\n是否中止导出？" then
+			(
+				--DestroyDialog SZX3DExporter
+				return false
+			)
+		)
+		
+		
+		--导出前统一单位到厘米
+		--oldratio = units.decodeValue "1.0cm"
+		--oldSystemType = units.SystemType
+		local oldMetricType = units.MetricType
+		--units.SystemType = #centimeters
+		units.MetricType = #centimeters
+		--in coordsys world about coordsys scale objects [(1.0 / oldratio),(1.0 / oldratio),(1.0 / oldratio)]  --全局缩放
+	   
 		ostream = GetSaveFileStream()
 		if ostream != undefined then
 		(
@@ -747,9 +801,9 @@ rollout SZX3DExporter "三维模型导出工具"
 			DestroyDialog SZX3DExporter
 		)
 		--恢复原始单位
-	    --units.SystemType = oldSystemType
-        units.MetricType = oldMetricType
-        --in coordsys world about coordsys scale objects [oldratio, oldratio, oldratio]  --全局缩放
+		--units.SystemType = oldSystemType
+		units.MetricType = oldMetricType
+		--in coordsys world about coordsys scale objects [oldratio, oldratio, oldratio]  --全局缩放
 	)
 )
 createDialog SZX3DExporter width:300
