@@ -14,22 +14,22 @@ rollout SZX3DExporter "三维模型导出工具"
 
 	-------------------------------------------------------------------------------------
 	-- User interface
-	group "三维模型导出工具  v0.1"
+	group "三维模型导出工具  v0.2"
 	(
-		label msg "导出您选择的三维模型到E虎Web应用" align:#left
-		label dummy1 "--------------------------------------------------------" align:#left
+		label msg "导出您选择的三维模型到云E虎Web应用" align:#left
+		label dummy1 "------------------------------------------------------" align:#left
 		checkbox exportColor "导出顶点颜色" checked:false enabled:true
 		checkbox exportUv "导出UV" checked:true enabled:true
 		checkbox exportNormal "导出法线" checked:true enabled:true
 		checkbox smoothNormal "使用顶点法线" checked:false enabled:true
-		label dummy2 "--------------------------------------------------------" align:#left
+		label dummy2 "------------------------------------------------------" align:#left
 		checkbox flipYZ "翻转YZ" checked:true enabled:true
 		checkbox flipUV "翻转UV" checked:false enabled:true
 		checkbox flipFace "翻转所有面" checked:false enabled:true
 		checkbox autoflipFace "尝试修复翻转面" checked:false enabled:true
-		label dummy3 "--------------------------------------------------------" align:#left
+		label dummy3 "------------------------------------------------------" align:#left
 		checkbox doubleSide "导出模型显示反面"  checked:false enabled:true
-		label dummy4 "--------------------------------------------------------" align:#left
+		label dummy4 "------------------------------------------------------" align:#left
 		button btn_export "导出选择的模型"
 	)
 
@@ -567,7 +567,7 @@ rollout SZX3DExporter "三维模型导出工具"
 	function ExtractMaterials objMesh objMaterial whereto wheretoColors zname hasVColors =
 	(
 		materialClass = classof objMaterial
-		if (materialClass == StandardMaterial) or  (matClass == VrayMtl) then
+		if (materialClass == StandardMaterial) or (materialClass == VrayMtl) then
 		(
 			if ( findItem whereto objMaterial ) == 0 then
 			(
@@ -586,7 +586,7 @@ rollout SZX3DExporter "三维模型导出工具"
 				(
 					subMaterial = objMaterial.materialList[materialIndex]
 					subMaterialClass = classof subMaterial
-					if (subMaterialClass == StandardMaterial) or ( matClass == VrayMtl) then
+					if (subMaterialClass == StandardMaterial) or ( subMaterialClass == VrayMtl) then
 					(
 						if ( findItem whereto subMaterial ) == 0 then
 						(
@@ -806,4 +806,4 @@ rollout SZX3DExporter "三维模型导出工具"
 		--in coordsys world about coordsys scale objects [oldratio, oldratio, oldratio]  --全局缩放
 	)
 )
-createDialog SZX3DExporter width:300
+createDialog SZX3DExporter width:240
