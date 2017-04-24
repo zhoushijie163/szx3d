@@ -45260,6 +45260,20 @@
 						case 'mapDiffuseWrap':
 						case 'mapDiffuseAnisotropy':
 							break;
+						case 'mapDisplacement':
+							json.displacementMap = loadTexture( value, m.mapDisplacementRepeat, m.mapDisplacementOffset, m.mapDisplacementWrap, m.mapDisplacementAnisotropy );
+							break;
+						case 'mapDisplacementScale':
+							json.displacementScale = value;
+							break;
+						case 'mapDisplacementBias':
+							json.displacementBias = value;
+							break;
+						case 'mapDisplacementRepeat':
+						case 'mapDisplacementOffset':
+						case 'mapDisplacementWrap':
+						case 'mapDisplacementAnisotropy':
+							break;
 						case 'mapEmissive':
 							json.emissiveMap = loadTexture( value, m.mapEmissiveRepeat, m.mapEmissiveOffset, m.mapEmissiveWrap, m.mapEmissiveAnisotropy );
 							break;
