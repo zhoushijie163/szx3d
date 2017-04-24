@@ -354,6 +354,7 @@ rollout SZX3DExporter "三维模型导出工具"
 				--DumpMap mat.glossinessMap "mapRoughness"
 				--DumpMap mat.orientationMap "mapNormal"
 				--DumpMap mat.diffuseLevelMap "mapLight"
+				DumpMap mat.displacementMap "mapDisplacement"
 			)
 			else if matClass == VrayMtl then 
 			(
@@ -361,7 +362,7 @@ rollout SZX3DExporter "三维模型导出工具"
 				Format "\"DbgName\": \"%\",\n" mat.name to:ostream
 				-- colors
 				DumpColor mat.diffuse  "colorDiffuse"
-				DumpColor mat.selfIllumColor "colorEmissive"
+				--DumpColor mat.selfIllumColor "colorEmissive"
 				
 				Format "\"shading\": \"standard\",\n" to:ostream
 				Format "\"opacity\": %,\n" mat.translucency_multiplier to:ostream
@@ -381,6 +382,7 @@ rollout SZX3DExporter "三维模型导出工具"
 				DumpMap mat.texmap_hilightGlossiness "mapMetalness"
 				--DumpMap mat.orientationMap "mapNormal"
 				--DumpMap mat.diffuseLevelMap "mapLight"
+				DumpMap mat.texmap_displacement "mapDisplacement"
 			)
 			else
 			(
