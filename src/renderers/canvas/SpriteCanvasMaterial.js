@@ -9,7 +9,7 @@ function SpriteCanvasMaterial( parameters ) {
 	this.type = 'SpriteCanvasMaterial';
 
 	this.color = new Color( 0xffffff );
-	this.program = function ( context, color ) {};
+	this.program = function () {};
 
 	this.setValues( parameters );
 
@@ -17,6 +17,7 @@ function SpriteCanvasMaterial( parameters ) {
 
 SpriteCanvasMaterial.prototype = Object.create( Material.prototype );
 SpriteCanvasMaterial.prototype.constructor = SpriteCanvasMaterial;
+SpriteCanvasMaterial.prototype.isSpriteCanvasMaterial = true;
 
 SpriteCanvasMaterial.prototype.clone = function () {
 

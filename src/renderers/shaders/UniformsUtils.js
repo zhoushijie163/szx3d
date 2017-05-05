@@ -49,7 +49,7 @@ var UniformsUtils = {
 
 				} else if ( Array.isArray( parameter_src ) ) {
 
-					uniforms_dst[ u ][ p ] = parameter_src.slice( 0 );
+					uniforms_dst[ u ][ p ] = parameter_src.slice();
 
 				} else {
 

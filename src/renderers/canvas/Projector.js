@@ -1,6 +1,5 @@
 import { FrontSide, BackSide, DoubleSide, VertexColors } from '../../constants';
 import { Color } from '../../math/Color';
-import { Vector2 } from '../../math/Vector2';
 import { Vector3 } from '../../math/Vector3';
 import { Vector4 } from '../../math/Vector4';
 import { Matrix3 } from '../../math/Matrix3';
@@ -9,7 +8,7 @@ import { Box3 } from '../../math/Box3';
 import { Frustum } from '../../math/Frustum';
 import { Geometry } from '../../core/Geometry';
 import { BufferGeometry } from '../../core/BufferGeometry';
-import { MultiMaterial } from '../../materials/MultiMaterial';
+import { Points } from '../../objects/Points';
 import { Line } from '../../objects/Line';
 import { LineSegments } from '../../objects/LineSegments';
 import { Mesh } from '../../objects/Mesh';
@@ -33,7 +32,6 @@ function Projector() {
 	_clipBox = new Box3( new Vector3( - 1, - 1, - 1 ), new Vector3( 1, 1, 1 ) ),
 	_boundingBox = new Box3(),
 	_points3 = new Array( 3 ),
-	_points4 = new Array( 4 ),
 
 	_viewMatrix = new Matrix4(),
 	_viewProjectionMatrix = new Matrix4(),
@@ -64,7 +62,7 @@ function Projector() {
 
 	};
 
-	this.pickingRay = function ( vector, camera ) {
+	this.pickingRay = function () {
 
 		console.error( 'SZX3D.Projector: .pickingRay() is now raycaster.setFromCamera().' );
 
@@ -75,6 +73,7 @@ function Projector() {
 	var RenderList = function () {
 
 		var normals = [];
+		var colors = [];
 		var uvs = [];
 
 		var object = null;
@@ -90,6 +89,7 @@ function Projector() {
 			normalMatrix.getNormalMatrix( object.matrixWorld );
 
 			normals.length = 0;
+			colors.length = 0;
 			uvs.length = 0;
 
 		}
@@ -127,6 +127,12 @@ function Projector() {
 		function pushNormal( x, y, z ) {
 
 			normals.push( x, y, z );
+
+		}
+
+		function pushColor( r, g, b ) {
+
+			colors.push( r, g, b );
 
 		}
 
@@ -239,6 +245,7 @@ function Projector() {
 			checkBackfaceCulling: checkBackfaceCulling,
 			pushVertex: pushVertex,
 			pushNormal: pushNormal,
+			pushColor: pushColor,
 			pushUv: pushUv,
 			pushLine: pushLine,
 			pushTriangle: pushTriangle
@@ -247,6 +254,55 @@ function Projector() {
 	};
 
 	var renderList = new RenderList();
+
+	function projectObject( object ) {
+
+		if ( object.visible === false ) return;
+
+		if ( object instanceof Light ) {
+
+			_renderData.lights.push( object );
+
+		} else if ( object instanceof Mesh || object instanceof Line || object instanceof Points ) {
+
+			if ( object.material.visible === false ) return;
+			if ( object.frustumCulled === true && _frustum.intersectsObject( object ) === false ) return;
+
+			addObject( object );
+
+		} else if ( object instanceof Sprite ) {
+
+			if ( object.material.visible === false ) return;
+			if ( object.frustumCulled === true && _frustum.intersectsSprite( object ) === false ) return;
+
+			addObject( object );
+
+		}
+
+		var children = object.children;
+
+		for ( var i = 0, l = children.length; i < l; i ++ ) {
+
+			projectObject( children[ i ] );
+
+		}
+
+	}
+
+	function addObject( object ) {
+
+		_object = getNextObjectInPool();
+		_object.id = object.id;
+		_object.object = object;
+
+		_vector3.setFromMatrixPosition( object.matrixWorld );
+		_vector3.applyMatrix4( _viewProjectionMatrix );
+		_object.z = _vector3.z;
+		_object.renderOrder = object.renderOrder;
+
+		_renderData.objects.push( _object );
+
+	}
 
 	this.projectScene = function ( scene, camera, sortObjects, sortElements ) {
 
@@ -271,44 +327,7 @@ function Projector() {
 		_renderData.objects.length = 0;
 		_renderData.lights.length = 0;
 
-		function addObject( object ) {
-
-			_object = getNextObjectInPool();
-			_object.id = object.id;
-			_object.object = object;
-
-			_vector3.setFromMatrixPosition( object.matrixWorld );
-			_vector3.applyMatrix4( _viewProjectionMatrix );
-			_object.z = _vector3.z;
-			_object.renderOrder = object.renderOrder;
-
-			_renderData.objects.push( _object );
-
-		}
-
-		scene.traverseVisible( function ( object ) {
-
-			if ( object instanceof Light ) {
-
-				_renderData.lights.push( object );
-
-			} else if ( object instanceof Mesh || object instanceof Line ) {
-
-				if ( object.material.visible === false ) return;
-				if ( object.frustumCulled === true && _frustum.intersectsObject( object ) === false ) return;
-
-				addObject( object );
-
-			} else if ( object instanceof Sprite ) {
-
-				if ( object.material.visible === false ) return;
-				if ( object.frustumCulled === true && _frustum.intersectsSprite( object ) === false ) return;
-
-				addObject( object );
-
-			}
-
-		} );
+		projectObject( scene );
 
 		if ( sortObjects === true ) {
 
@@ -318,9 +337,11 @@ function Projector() {
 
 		//
 
-		for ( var o = 0, ol = _renderData.objects.length; o < ol; o ++ ) {
+		var objects = _renderData.objects;
 
-			var object = _renderData.objects[ o ].object;
+		for ( var o = 0, ol = objects.length; o < ol; o ++ ) {
+
+			var object = objects[ o ].object;
 			var geometry = object.geometry;
 
 			renderList.setObject( object );
@@ -418,8 +439,7 @@ function Projector() {
 
 					var material = object.material;
 
-					var isFaceMaterial = material instanceof MultiMaterial;
-					var objectMaterials = isFaceMaterial === true ? object.material : null;
+					var isMultiMaterial = Array.isArray( material );
 
 					for ( var v = 0, vl = vertices.length; v < vl; v ++ ) {
 
@@ -457,8 +477,8 @@ function Projector() {
 
 						var face = faces[ f ];
 
-						material = isFaceMaterial === true
-							 ? objectMaterials.materials[ face.materialIndex ]
+						material = isMultiMaterial === true
+							 ? object.material[ face.materialIndex ]
 							 : object.material;
 
 						if ( material === undefined ) continue;
@@ -558,6 +578,18 @@ function Projector() {
 
 						}
 
+						if ( attributes.color !== undefined ) {
+
+							var colors = attributes.color.array;
+
+							for ( var i = 0, l = colors.length; i < l; i += 3 ) {
+
+								renderList.pushColor( colors[ i ], colors[ i + 1 ], colors[ i + 2 ] );
+
+							}
+
+						}
+
 						if ( geometry.index !== null ) {
 
 							var indices = geometry.index.array;
@@ -639,35 +671,33 @@ function Projector() {
 
 				}
 
+			} else if ( object instanceof Points ) {
+
+				_modelViewProjectionMatrix.multiplyMatrices( _viewProjectionMatrix, _modelMatrix );
+
+				if ( geometry instanceof Geometry ) {
+
+					var vertices = object.geometry.vertices;
+
+					for ( var v = 0, vl = vertices.length; v < vl; v ++ ) {
+
+						var vertex = vertices[ v ];
+
+						_vector4.set( vertex.x, vertex.y, vertex.z, 1 );
+						_vector4.applyMatrix4( _modelViewProjectionMatrix );
+
+						pushPoint( _vector4, object, camera );
+
+					}
+
+				}
+
 			} else if ( object instanceof Sprite ) {
 
 				_vector4.set( _modelMatrix.elements[ 12 ], _modelMatrix.elements[ 13 ], _modelMatrix.elements[ 14 ], 1 );
 				_vector4.applyMatrix4( _viewProjectionMatrix );
 
-				var invW = 1 / _vector4.w;
-
-				_vector4.z *= invW;
-
-				if ( _vector4.z >= - 1 && _vector4.z <= 1 ) {
-
-					_sprite = getNextSpriteInPool();
-					_sprite.id = object.id;
-					_sprite.x = _vector4.x * invW;
-					_sprite.y = _vector4.y * invW;
-					_sprite.z = _vector4.z;
-					_sprite.renderOrder = object.renderOrder;
-					_sprite.object = object;
-
-					_sprite.rotation = object.rotation;
-
-					_sprite.scale.x = object.scale.x * Math.abs( _sprite.x - ( _vector4.x + camera.projectionMatrix.elements[ 0 ] ) / ( _vector4.w + camera.projectionMatrix.elements[ 12 ] ) );
-					_sprite.scale.y = object.scale.y * Math.abs( _sprite.y - ( _vector4.y + camera.projectionMatrix.elements[ 5 ] ) / ( _vector4.w + camera.projectionMatrix.elements[ 13 ] ) );
-
-					_sprite.material = object.material;
-
-					_renderData.elements.push( _sprite );
-
-				}
+				pushPoint( _vector4, object, camera );
 
 			}
 
@@ -682,6 +712,35 @@ function Projector() {
 		return _renderData;
 
 	};
+
+	function pushPoint( _vector4, object, camera ) {
+
+		var invW = 1 / _vector4.w;
+
+		_vector4.z *= invW;
+
+		if ( _vector4.z >= - 1 && _vector4.z <= 1 ) {
+
+			_sprite = getNextSpriteInPool();
+			_sprite.id = object.id;
+			_sprite.x = _vector4.x * invW;
+			_sprite.y = _vector4.y * invW;
+			_sprite.z = _vector4.z;
+			_sprite.renderOrder = object.renderOrder;
+			_sprite.object = object;
+
+			_sprite.rotation = object.rotation;
+
+			_sprite.scale.x = object.scale.x * Math.abs( _sprite.x - ( _vector4.x + camera.projectionMatrix.elements[ 0 ] ) / ( _vector4.w + camera.projectionMatrix.elements[ 12 ] ) );
+			_sprite.scale.y = object.scale.y * Math.abs( _sprite.y - ( _vector4.y + camera.projectionMatrix.elements[ 5 ] ) / ( _vector4.w + camera.projectionMatrix.elements[ 13 ] ) );
+
+			_sprite.material = object.material;
+
+			_renderData.elements.push( _sprite );
+
+		}
+
+	}
 
 	// Pools
 

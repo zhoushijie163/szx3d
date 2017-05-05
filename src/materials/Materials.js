@@ -11,7 +11,6 @@ export { MeshPhongMaterial } from './MeshPhongMaterial.js';
 export { MeshStandardMaterial } from './MeshStandardMaterial.js';
 export { MeshPhysicalMaterial } from './MeshPhysicalMaterial.js';
 export { SpriteMaterial } from './SpriteMaterial.js';
-export { MultiMaterial } from './MultiMaterial.js';
 export { ShaderMaterial } from './ShaderMaterial.js';
 export { RawShaderMaterial } from './RawShaderMaterial.js';
 export { ShadowMaterial } from './ShadowMaterial.js';

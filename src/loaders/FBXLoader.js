@@ -14,17 +14,14 @@ import { SkinnedMesh } from '../objects/SkinnedMesh';
 import { MeshBasicMaterial } from '../materials/MeshBasicMaterial';
 import { MeshLambertMaterial } from '../materials/MeshLambertMaterial';
 import { MeshPhongMaterial } from '../materials/MeshPhongMaterial';
-import { MultiMaterial } from '../materials/MultiMaterial';
 import { AnimationClip } from '../animation/AnimationClip';
 import { NURBSCurve } from '../extras/curves/NURBSCurve';
-import { Loader } from './Loader';
 import { FileLoader } from './FileLoader';
 import { TextureLoader } from './TextureLoader';
 import { DefaultLoadingManager } from './LoadingManager';
 
 function FBXLoader( manager ) {
 
-	Loader.call( this );
 	this.manager = ( manager !== undefined ) ? manager : DefaultLoadingManager;
 	this.textureLoader = null;
 	this.textureBasePath = null;
@@ -32,9 +29,6 @@ function FBXLoader( manager ) {
 };
 
 ( function () {
-
-	FBXLoader.prototype = Object.create( Loader.prototype );
-	FBXLoader.prototype.constructor = FBXLoader;
 
 	Object.assign( FBXLoader.prototype, {
 
@@ -371,6 +365,7 @@ function FBXLoader( manager ) {
 
 			}
 
+			var degree = order - 1;
 			var knots = this.parseFloatList( nurbsInfo.subNodes.KnotVector.properties.a );
 
 			var controlPoints = [];
@@ -383,17 +378,30 @@ function FBXLoader( manager ) {
 
 			}
 
+			var startKnot, endKnot;
+
 			if ( nurbsInfo.properties.Form === "Closed" ) {
 
 				controlPoints.push( controlPoints[ 0 ] );
 
+			} else if ( nurbsInfo.properties.Form === 'Periodic' ) {
+
+				startKnot = degree;
+				endKnot = knots.length - 1 - startKnot;
+
+				for ( var i = 0; i < degree; ++ i ) {
+
+					controlPoints.push( controlPoints[ i ] );
+
+				}
+
 			}
 
-			var curve = new NURBSCurve( order - 1, knots, controlPoints );
+			var curve = new NURBSCurve( degree, knots, controlPoints, startKnot, endKnot );
 
 			// Pre-generate a geometry
 			var geometry = new Geometry();
-			geometry.vertices = curve.getPoints( controlPoints.length * 1.5 );
+			geometry.vertices = curve.getPoints( controlPoints.length * 7 );
 
 			var mesh = new Line( geometry );
 			// Store the NURBSCurve class so the user can recreate a new geometry with a different number of points
@@ -433,7 +441,7 @@ function FBXLoader( manager ) {
 
 			if ( materials.length > 1 ) {
 
-				material = new MultiMaterial( materials );
+				material = new Array( materials );
 				//material = materials[ 0 ];
 
 			} else {
@@ -444,11 +452,11 @@ function FBXLoader( manager ) {
 
 			if ( geometry.bones !== undefined && geometry.skinWeights !== undefined && geometry.skinWeights.length > 0 ) {
 
-				if ( material instanceof MultiMaterial ) {
+				if ( material instanceof Array ) {
 
-					for ( var i = 0; i < material.materials.length; ++ i ) {
+					for ( var i = 0; i < material.length; ++ i ) {
 
-						material.materials[ i ].skinning = true;
+						material[ i ].skinning = true;
 
 					}
 

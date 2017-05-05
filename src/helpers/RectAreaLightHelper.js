@@ -42,13 +42,10 @@ RectAreaLightHelper.prototype.constructor = RectAreaLightHelper;
 
 RectAreaLightHelper.prototype.dispose = function () {
 
-	var lightPlane = this.children[ 0 ];
-	var targetLine = this.children[ 1 ];
-
-	lightPlane.geometry.dispose();
-	lightPlane.material.dispose();
-	targetLine.geometry.dispose();
-	targetLine.material.dispose();
+	this.children[ 0 ].geometry.dispose();
+	this.children[ 0 ].material.dispose();
+	this.children[ 1 ].geometry.dispose();
+	this.children[ 1 ].material.dispose();
 
 };
 
@@ -75,8 +72,7 @@ RectAreaLightHelper.prototype.update = function () {
 		
 		lightPlane.material.color.copy( this.light.color ).multiplyScalar( this.light.intensity );
 
-        if ( this.light.target !== undefined && this.light.target instanceof Object3D) {
-        
+		if ( this.light.target !== undefined && this.light.target instanceof Object3D) {
 		    v1.setFromMatrixPosition( this.light.matrixWorld );
 		    v2.setFromMatrixPosition( this.light.target.matrixWorld );
 		    v3.subVectors( v2, v1 );

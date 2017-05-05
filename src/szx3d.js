@@ -94,6 +94,7 @@ export * from './materials/Materials.js';
 export { Group } from './objects/Group.js';
 export { Points } from './objects/Points.js';
 export { LineSegments } from './objects/LineSegments.js';
+export { LineLoop } from './objects/LineLoop.js';
 export { Line } from './objects/Line.js';
 export { Mesh } from './objects/Mesh.js';
 export { Bone } from './objects/Bone.js';

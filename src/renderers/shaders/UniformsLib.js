@@ -162,7 +162,7 @@ var UniformsLib = {
 		} }
 
 	},
-	
+
 	points: {
 
 		diffuse: { value: new Color( 0xeeeeee ) },

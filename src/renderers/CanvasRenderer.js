@@ -1,26 +1,10 @@
 import { REVISION, NormalBlending, AdditiveBlending, SubtractiveBlending, MultiplyBlending, VertexColors, FaceColors, UVMapping, SphericalReflectionMapping, RepeatWrapping, MirroredRepeatWrapping } from '../constants';
 import { Color } from '../math/Color';
-import { Vector2 } from '../math/Vector2';
 import { Vector3 } from '../math/Vector3';
-import { Vector4 } from '../math/Vector4';
 import { Matrix3 } from '../math/Matrix3';
-import { Matrix4 } from '../math/Matrix4';
 import { Box2 } from '../math/Box2';
 import { CompressedTexture } from '../textures/CompressedTexture';
 import { DataTexture } from '../textures/DataTexture';
-import { LineBasicMaterial } from '../materials/LineBasicMaterial';
-import { LineDashedMaterial } from '../materials/LineDashedMaterial';
-import { MeshBasicMaterial } from '../materials/MeshBasicMaterial';
-import { MeshNormalMaterial } from '../materials/MeshNormalMaterial';
-import { MeshLambertMaterial } from '../materials/MeshLambertMaterial';
-import { MeshPhongMaterial } from '../materials/MeshPhongMaterial';
-import { MeshStandardMaterial } from '../materials/MeshStandardMaterial';
-import { SpriteMaterial } from '../materials/SpriteMaterial';
-import { SpriteCanvasMaterial } from './canvas/SpriteCanvasMaterial';
-import { Camera } from '../cameras/Camera';
-import { AmbientLight } from '../lights/AmbientLight';
-import { DirectionalLight } from '../lights/DirectionalLight';
-import { PointLight } from '../lights/PointLight';
 import { RenderableObject, RenderableVertex, RenderableLine, RenderableFace, RenderableSprite } from './canvas/RenderableObject';
 import { Projector } from './canvas/Projector';
 
@@ -66,20 +50,11 @@ function CanvasRenderer( parameters ) {
 	_contextLineJoin = null,
 	_contextLineDash = [],
 
-	_camera,
-
-	_v1, _v2, _v3, _v4,
-	_v5 = new RenderableVertex(),
-	_v6 = new RenderableVertex(),
+	_v1, _v2, _v3,
 
 	_v1x, _v1y, _v2x, _v2y, _v3x, _v3y,
-	_v4x, _v4y, _v5x, _v5y, _v6x, _v6y,
 
 	_color = new Color(),
-	_color1 = new Color(),
-	_color2 = new Color(),
-	_color3 = new Color(),
-	_color4 = new Color(),
 
 	_diffuseColor = new Color(),
 	_emissiveColor = new Color(),
@@ -88,7 +63,7 @@ function CanvasRenderer( parameters ) {
 
 	_patterns = {},
 
-	_image, _uvs,
+	_uvs,
 	_uv1x, _uv1y, _uv2x, _uv2y, _uv3x, _uv3y,
 
 	_clipBox = new Box2(),
@@ -304,7 +279,7 @@ function CanvasRenderer( parameters ) {
 
 	this.render = function ( scene, camera ) {
 
-		if ( camera instanceof Camera === false ) {
+		if ( camera.isCamera === undefined ) {
 
 			console.error( 'SZX3D.CanvasRenderer.render: camera is not an instance of SZX3D.Camera.' );
 			return;
@@ -333,7 +308,6 @@ function CanvasRenderer( parameters ) {
 		_renderData = _projector.projectScene( scene, camera, this.sortObjects, this.sortElements );
 		_elements = _renderData.elements;
 		_lights = _renderData.lights;
-		_camera = camera;
 
 		_normalViewMatrix.getNormalMatrix( camera.matrixWorldInverse );
 
@@ -446,17 +420,17 @@ function CanvasRenderer( parameters ) {
 			var light = _lights[ l ];
 			var lightColor = light.color;
 
-			if ( light instanceof AmbientLight ) {
+			if ( light.isAmbientLight ) {
 
 				_ambientLight.add( lightColor );
 
-			} else if ( light instanceof DirectionalLight ) {
+			} else if ( light.isDirectionalLight ) {
 
 				// for sprites
 
 				_directionalLights.add( lightColor );
 
-			} else if ( light instanceof PointLight ) {
+			} else if ( light.isPointLight ) {
 
 				// for sprites
 
@@ -476,7 +450,7 @@ function CanvasRenderer( parameters ) {
 
 			_lightColor.copy( light.color );
 
-			if ( light instanceof DirectionalLight ) {
+			if ( light.isDirectionalLight ) {
 
 				var lightPosition = _vector3.setFromMatrixPosition( light.matrixWorld ).normalize();
 
@@ -488,7 +462,7 @@ function CanvasRenderer( parameters ) {
 
 				color.add( _lightColor.multiplyScalar( amount ) );
 
-			} else if ( light instanceof PointLight ) {
+			} else if ( light.isPointLight ) {
 
 				var lightPosition = _vector3.setFromMatrixPosition( light.matrixWorld );
 
@@ -518,11 +492,11 @@ function CanvasRenderer( parameters ) {
 		var scaleX = element.scale.x * _canvasWidthHalf;
 		var scaleY = element.scale.y * _canvasHeightHalf;
 
-		var dist = 0.5 * Math.sqrt( scaleX * scaleX + scaleY * scaleY ); // allow for rotated sprite
+		var dist = Math.sqrt( scaleX * scaleX + scaleY * scaleY ); // allow for rotated sprite
 		_elemBox.min.set( v1.x - dist, v1.y - dist );
 		_elemBox.max.set( v1.x + dist, v1.y + dist );
 
-		if ( material instanceof SpriteMaterial ) {
+		if ( material.isSpriteMaterial ) {
 
 			var texture = material.map;
 
@@ -578,7 +552,7 @@ function CanvasRenderer( parameters ) {
 
 			}
 
-		} else if ( material instanceof SpriteCanvasMaterial ) {
+		} else if ( material.isSpriteCanvasMaterial ) {
 
 			setStrokeStyle( material.color.getStyle() );
 			setFillStyle( material.color.getStyle() );
@@ -590,6 +564,17 @@ function CanvasRenderer( parameters ) {
 
 			material.program( _context );
 
+			_context.restore();
+
+		} else if ( material.isPointsMaterial ) {
+
+			setFillStyle( material.color.getStyle() );
+
+			_context.save();
+			_context.translate( v1.x, v1.y );
+			if ( material.rotation !== 0 ) _context.rotate( material.rotation );
+			_context.scale( scaleX * material.size, - scaleY * material.size );
+			_context.fillRect( - 0.5, - 0.5, 1, 1 );
 			_context.restore();
 
 		}
@@ -615,7 +600,7 @@ function CanvasRenderer( parameters ) {
 		_context.moveTo( v1.positionScreen.x, v1.positionScreen.y );
 		_context.lineTo( v2.positionScreen.x, v2.positionScreen.y );
 
-		if ( material instanceof LineBasicMaterial ) {
+		if ( material.isLineBasicMaterial ) {
 
 			setLineWidth( material.linewidth );
 			setLineCap( material.linecap );
@@ -662,7 +647,7 @@ function CanvasRenderer( parameters ) {
 			_context.stroke();
 			_elemBox.expandByScalar( material.linewidth * 2 );
 
-		} else if ( material instanceof LineDashedMaterial ) {
+		} else if ( material.isLineDashedMaterial ) {
 
 			setLineWidth( material.linewidth );
 			setLineCap( material.linecap );
@@ -694,7 +679,7 @@ function CanvasRenderer( parameters ) {
 
 		drawTriangle( _v1x, _v1y, _v2x, _v2y, _v3x, _v3y );
 
-		if ( ( material instanceof MeshLambertMaterial || material instanceof MeshPhongMaterial || material instanceof MeshStandardMaterial ) && material.map === null ) {
+		if ( ( material.isMeshLambertMaterial || material.isMeshPhongMaterial || material.isMeshStandardMaterial ) && material.map === null ) {
 
 			_diffuseColor.copy( material.color );
 			_emissiveColor.copy( material.emissive );
@@ -717,7 +702,7 @@ function CanvasRenderer( parameters ) {
 				 ? strokePath( _color, material.wireframeLinewidth, material.wireframeLinecap, material.wireframeLinejoin )
 				 : fillPath( _color );
 
-		} else if ( material instanceof MeshBasicMaterial || material instanceof MeshLambertMaterial || material instanceof MeshPhongMaterial || material instanceof MeshStandardMaterial) {
+		} else if ( material.isMeshBasicMaterial || material.isMeshLambertMaterial || material.isMeshPhongMaterial || material.isMeshStandardMaterial ) {
 
 			if ( material.map !== null ) {
 
@@ -766,7 +751,7 @@ function CanvasRenderer( parameters ) {
 
 			}
 
-		} else if ( material instanceof MeshNormalMaterial ) {
+		} else if ( material.isMeshNormalMaterial ) {
 
 			_normal.copy( element.normalModel ).applyMatrix3( _normalViewMatrix );
 
@@ -975,6 +960,7 @@ function CanvasRenderer( parameters ) {
 
 	}
 
+	/*
 	function clipImage( x0, y0, x1, y1, x2, y2, u0, v0, u1, v1, u2, v2, image ) {
 
 		// http://extremelysatisfactorytotalitarianism.com/blog/?p=2120
@@ -1012,6 +998,7 @@ function CanvasRenderer( parameters ) {
 		_context.restore();
 
 	}
+	*/
 
 	// Hide anti-alias gaps
 
