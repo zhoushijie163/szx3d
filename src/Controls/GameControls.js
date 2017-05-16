@@ -42,7 +42,8 @@ function GameControls( object, domElement ) {
 		} else if ( event.button === 2 ) {
 			state = STATE.BACKWARDS;
 		}
-		pointer.set( event.offsetX, event.offsetY );
+		var rect = domElement.getBoundingClientRect();
+		pointer.set( event.clientX - rect.left, event.clientY - rect.top );
 		domElement.addEventListener( 'mousemove', onMouseMove, false );
 		domElement.addEventListener( 'mouseup', onMouseUp, false );
 		domElement.addEventListener( 'mouseout', onMouseUp, false );
@@ -51,7 +52,8 @@ function GameControls( object, domElement ) {
 	function onMouseMove( event ) {
 		event.preventDefault();
 		if ( scope.enabled === false ) return;
-		pointer.set( event.offsetX, event.offsetY );
+		var rect = domElement.getBoundingClientRect();
+		pointer.set( event.clientX - rect.left, event.clientY - rect.top );
 	}
 	function onMouseUp( event ) {
 		event.preventDefault();
@@ -70,7 +72,8 @@ function GameControls( object, domElement ) {
 		event.preventDefault();
 		if ( scope.enabled === false ) return;
 		if (event.touches.length === 1) {
-			pointer.set( event.touches[ 0 ].pageX - domElement.offsetLeft, event.touches[ 0 ].pageY - domElement.offsetTop );
+			var rect = domElement.getBoundingClientRect();
+			pointer.set( event.touches[ 0 ].clientX - rect.left, event.touches[ 0 ].clientY - rect.top );
 			state = STATE.STANDSTILL;
 			domElement.addEventListener( 'touchmove', touchMove, false );
 			domElement.addEventListener( 'touchend', touchEnd, false );
@@ -80,7 +83,8 @@ function GameControls( object, domElement ) {
 		event.preventDefault();
 		if ( scope.enabled === false ) return;
 		if (event.touches.length === 1) {
-			pointer.set( event.touches[ 0 ].pageX - domElement.offsetLeft, event.touches[ 0 ].pageY - domElement.offsetTop );
+			var rect = domElement.getBoundingClientRect();
+			pointer.set( event.touches[ 0 ].clientX - rect.left, event.touches[ 0 ].clientY - rect.top );
 		}
 	}
 	function touchEnd( event ) {

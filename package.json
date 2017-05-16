@@ -3,7 +3,7 @@
   "version": "1.2.0",
   "description": "JavaScript 3D library",
   "main": "build/szx3d.js",
-  "repository": "mrdoob/szx3d.js",
+  "repository": "build/szx3d.js",
   "jsnext:main": "build/szx3d.module.js",
   "module": "build/szx3d.module.js",
   "files": [

@@ -184,6 +184,8 @@ export { MaterialLoader } from './loaders/MaterialLoader.js';
 export { ObjectLoader } from './loaders/ObjectLoader.js';
 export { FBXLoader } from './loaders/FBXLoader.js';
 
+export { JSONExporter } from './exporters/JSONExporter.js';
+
 export { PlanControls } from './controls/PlanControls.js';
 export { EditorControls } from './controls/EditorControls.js';
 export { GameControls } from './controls/GameControls.js';
