@@ -40,10 +40,8 @@ BoxHelper.prototype.update = ( function () {
 	return function update( object ) {
 
 		if ( object !== undefined ) {
-
 			//console.warn( 'THREE.BoxHelper: .update() has no longer arguments.' );
 			this.object = object;
-
 		}
 
 		if ( this.object !== undefined ) {

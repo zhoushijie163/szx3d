@@ -83,6 +83,8 @@ SpotLightHelper.prototype.update = function () {
 
 	return function update() {
 
+		this.light.updateMatrixWorld();
+
 		var coneLength = this.light.distance ? this.light.distance : 1000;
 		var coneWidth = coneLength * Math.tan( this.light.angle );
 
@@ -94,7 +96,7 @@ SpotLightHelper.prototype.update = function () {
 
 		this.cone.lookAt( vector2.sub( vector ) );
 
-		this.cone.material.color.copy( this.light.color ).multiplyScalar( this.light.intensity );
+		this.cone.material.color.copy( this.light.color );
 
 		this.targetLine.lookAt(vector3);
 		this.targetLine.scale.z = vector3.length();

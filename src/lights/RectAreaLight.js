@@ -1,16 +1,16 @@
 import { Light } from './Light';
-import { Object3D } from '../core/Object3D';
+
 /**
  * @author abelnation / http://github.com/abelnation
  */
 
-function RectAreaLight ( color, intensity, width, height ) {
+function RectAreaLight( color, intensity, width, height ) {
 
 	Light.call( this, color, intensity );
 
 	this.type = 'RectAreaLight';
 
-	this.position.copy( Object3D.DefaultUp );
+	this.position.set( 0, 1, 0 );
 	this.updateMatrix();
 
 	this.width = ( width !== undefined ) ? width : 10;

@@ -43,7 +43,7 @@ var UniformsUtils = {
 
 					if( parameter_src.onUpdate ) {
 						uniforms_dst[ u ][ p ] = parameter_src; 
-					} else { 
+					} else {
 						uniforms_dst[ u ][ p ] = parameter_src.clone(); 
 					}
 

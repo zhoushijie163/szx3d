@@ -9,6 +9,7 @@ import { LineSegments } from '../objects/LineSegments';
 import { LineBasicMaterial } from '../materials/LineBasicMaterial';
 import { Uint16BufferAttribute, Float32BufferAttribute } from '../core/BufferAttribute';
 import { BufferGeometry } from '../core/BufferGeometry';
+import { BufferAttribute } from '../core/BufferAttribute';
 
 function RectAreaLightHelper( light ) {
 
